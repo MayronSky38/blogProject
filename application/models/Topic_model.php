@@ -18,6 +18,13 @@ class Topic_model extends CI_Model{
         return $query->row_array();
 	}
 
+	public function getIdTopic($topicName){
+		$this->db->select("idTopic");
+		$this->db->where("name", $topicName);
+		$query = $this->db->get("topic");
+        return $query->row_array();
+	}
+
 }
 
 ?>

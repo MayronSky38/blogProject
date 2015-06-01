@@ -14,9 +14,9 @@ class Coment_controller extends CI_Controller {
     		show_404();
     	}
     	else{
-    		$data["coments"] = $this->Post_model->getAllInfo($idPost);
-   		
-    		$this->load->view("coments_view", $data);
+    	   $data["coments"] = $this->Coment_model->getComents($idPost);
+   		   $data["post"] = $this->Post_model->getPostInfo($idPost);
+    	   $this->load->view("coments_view", $data);
     	}
     }
 }

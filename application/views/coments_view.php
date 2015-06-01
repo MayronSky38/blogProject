@@ -1,21 +1,27 @@
 <html>
 <head>
-	<title> Coments for  <?php echo $coments[0]["title"]?></title>
+	<title> Coments for  <?php echo $post["title"]?></title>
 </head>
 <body>
-<h1> You are at the topic: <?php echo $coments[0]["name"] ?> </h1>
-<h2>Coments for the post: <?php echo $coments[0]["title"] ?></h2>
+<h1> You are at the topic: <?php echo $post["name"] ?> </h1>
+<h2>Coments for the post: <?php echo $post["title"] ?></h2>
 
-<?php for($i = 0; $i < count($coments); $i++): ?>
+<div class = "postContent">
+	<p> <?php echo $post["content"] ?> </p>
+	<p> By <?php echo $post["nickName"] ?> at <?php echo $post["publicDate"] ?> </p>
+</div>
+<?php 
+if( isset($coments) ){
+	for($i = 0; $i < count($coments); $i++): ?>
 
-        <h3><?php echo $coments[$i]['content'] ?></a></h3>
-        <div class="main">
-                <?php echo $coments[$i]['publicDate'] . " by " . $coments[$i]['nickName']?>
-        </div>
+	        <h3><?php echo $coments[$i]['content'] ?></a></h3>
+	        <div class="main">
+	                <?php echo $coments[$i]['publicDate'] . " by " . $coments[$i]['nickName']?>
+	        </div>
 
-<?php endfor ?>
+	<?php endfor; }?>
 <div class="footer">
-	<a href="/codeigniter/index.php/main/<?php echo $coments[0]["idTopic"]?>" > Go back </a>
+	<a href="/codeigniter/index.php/main/<?php echo $post["idTopic"]?>" > Go back </a>
 </div>
 </body>
 </html>
