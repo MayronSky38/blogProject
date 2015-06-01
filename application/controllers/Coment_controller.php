@@ -7,6 +7,7 @@ class Coment_controller extends CI_Controller {
             parent::__construct();
             $this->load->model("Coment_model");
             $this->load->model("Post_model");
+            $this->load->helper(array('form', 'url'));
     }
 
     public function listAllComents($idPost = null){
@@ -24,9 +25,7 @@ class Coment_controller extends CI_Controller {
         if($topicName === null || $idPost === null){
             show_404();
         }
-        else{
-            $this->load->helper(array('form', 'url'));
-
+        else{   
             $this->load->library('form_validation');
             $this->load->helper('date');
             
@@ -62,6 +61,29 @@ class Coment_controller extends CI_Controller {
             }
         }
     }
+
+
+    public function deleteComent($idPost = null, $idComent = null){
+        if($idPost === null || $idComent === null){
+            show_404();
+        }
+        else{
+            $data = $this->Post_model->getByPostTopicInfo($idPost);
+            $topicName = $data['name'];
+
+            $result = $this->Coment_model->deleteComent($idPost, $idComent);
+            if($result){
+                
+                redirect("http://localhost/codeigniter/index.php/$topicName/post/$idPost");
+            }
+            else{
+               ///show message error. 
+            }
+        }
+
+    }
+
+
 }
 
 ?>

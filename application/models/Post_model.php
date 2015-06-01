@@ -26,6 +26,17 @@ class Post_model extends CI_Model{
 	}
 
 
+	public function getByPostTopicInfo($idPost){
+		$query = $this->db->query(
+			"SELECT topic.idTopic, topic.name
+			FROM post
+			INNER JOIN topic ON topic.idTopic = post.fk_idTopic
+			WHERE post.idPost = $idPost"
+			);
+        return $query->row_array();
+	}
+
+
 	public function getLastPostId(){
 		$query = $this->db->query("SELECT MAX(idPost)+1 as lastId from post");
 		return $query->row_array();
@@ -49,6 +60,14 @@ class Post_model extends CI_Model{
 	}
 
 
+	public function deletePost($idPost){
+		$this->db->delete("post", array("idPost" => $idPost));
+		if($this->db->affected_rows() > 0)
+		{    
+			$this->db->delete("coment", array("fk_idPost" => $idPost));
+			return true; 
+		}
+	}
 }
 
 ?>

@@ -14,18 +14,17 @@
 	        </div>
 
 	<?php endforeach ?>
+	
+	<div class="login">
 	<?php
 	if( isset($_SESSION["nickName"]) ){
 		echo "Logged as : " . $_SESSION["nickName"] . " with the id: " . $_SESSION["idUser"] . " as " . $_SESSION["typeUser"];
-		?>
-		<div class="login">
-			<a href="/codeigniter/index.php/logout"> Logout </a> 
-		</div>
+		?>	
+		<a href="/codeigniter/index.php/logout"> Logout </a> 
 	<?php
 	}  else{ ?>
-	<div class="login">
 		<a href="/codeigniter/index.php/login"> Login </a> 
-	</div>
 	<?php } ?>
+	</div>
 </body>
 </html>

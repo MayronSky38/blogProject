@@ -38,5 +38,16 @@ class Coment_model extends CI_Model{
 			return true; 
 		}
 	}
+
+
+	public function deleteComent($idPost, $idComent){
+		$this->db->delete("coment", array("fk_idPost" => $idPost, "idComent" => $idComent));
+		if($this->db->affected_rows() > 0)
+		{    
+			return true; 
+		}
+	}
+
+
 }
 ?>

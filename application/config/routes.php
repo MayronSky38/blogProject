@@ -49,13 +49,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route['logout'] = 'User_controller/logout';									//Ruta per fer logout de la pagina. Redirigit a home.
-$route['login'] = 'User_controller/login';										//Ruta per fer login a la pagina. Redirigit a home.
-$route['(:any)/(:num)/createComent'] = 'Coment_controller/createComent/$1/$2';	//Ruta per crear comentaris. $1 -> nom del topic $2 -> id del post.
-$route['(:any)/createPost'] = 'Post_controller/createPost/$1';					//Ruta per crear posts. El parametre fa referencia al nom del topic.
-$route['(:any)/post/(:num)'] = 'Coment_controller/listAllComents/$2'; 			//Llistar els comentaris d'un post a un topic. $1 name topic $2 idPost
-$route['(:any)/(:num)'] = 'Post_controller/listAllPosts/$2'; 					//Llistar els posts d'un topic.  	$1 name Topic $2 id Topic
-$route['home'] = 'Topic_controller/listAllTopics';								//Pagina principal del blog.
+$route ['(:any)/(:num)/deleteComent/(:num)'] = 'Coment_controller/deleteComent/$2/$3';	//Ruta per esborrar comentaris. $1 -> nom del topic, $2 -> id del post, $3 -> id del comentari
+$route['(:any)/deletePost/(:num)'] = 'Post_controller/deletePost/$2';					//Ruta per esborrar posts. $1 -> nom del topic, $2 -> id del post.
+$route['(:any)/(:num)/createComent'] = 'Coment_controller/createComent/$1/$2';			//Ruta per crear comentaris. $1 -> nom del topic, $2 -> id del post.
+$route['(:any)/createPost'] = 'Post_controller/createPost/$1';							//Ruta per crear posts. El parametre fa referencia al nom del topic.
+$route['(:any)/post/(:num)'] = 'Coment_controller/listAllComents/$2'; 					//Llistar els comentaris d'un post a un topic. $1 name topic $2 idPost
+$route['(:any)/(:num)'] = 'Post_controller/listAllPosts/$2'; 							//Llistar els posts d'un topic.  	$1 name Topic $2 id Topic
+$route['logout'] = 'User_controller/logout';											//Ruta per fer logout de la pagina. Redirigit a home.
+$route['login'] = 'User_controller/login';												//Ruta per fer login a la pagina. Redirigit a home.
+$route['home'] = 'Topic_controller/listAllTopics';										//Pagina principal del blog.
 
 
 $route['inserts'] = 'AutoInserts_controller/generate';
