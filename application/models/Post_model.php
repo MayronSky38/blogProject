@@ -77,6 +77,15 @@ class Post_model extends CI_Model{
 		$this->db->update('coment', array("banned" => $banned));
 		return true; 
 	}
+
+
+	public function editPost($idPost, $newContent){
+		$this->db->where('idPost', $idPost);
+		$this->db->update('post', array("content" => $newContent));
+		return true;
+	}
+
+
 }
 
 ?>

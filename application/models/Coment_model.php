@@ -18,6 +18,19 @@ class Coment_model extends CI_Model{
 	}
 
 
+	public function getComentInfo($idPost, $idComent){
+		$query = $this->db->query(
+			"SELECT coment.idComent, coment.content, coment.banned, post.title, post.idPost, user.nickName, topic.name
+			FROM coment
+			INNER JOIN user ON coment.fk_idUser = user.idUser
+			INNER JOIN post ON coment.fk_idPost = post.idPost
+			INNER JOIN topic ON post.fk_idTopic = topic.idTopic
+			WHERE coment.fk_idPost = $idPost AND coment.idComent = $idComent"
+			);
+        return $query->row_array();	
+	}
+
+
 	public function getLastComentId($idPost){
 		$query = $this->db->query("SELECT MAX(idComent)+1 as lastId FROM coment WHERE fk_idPost = $idPost");
 		return $query->row_array();
@@ -56,6 +69,13 @@ class Coment_model extends CI_Model{
 		return true; 
 	}
 
+
+	public function editComent($idPost, $idComent, $newContent){
+		$this->db->where('fk_idPost', $idPost);
+		$this->db->where('idComent', $idComent);
+		$this->db->update('coment', array("content" => $newContent));
+		return true;
+	}
 
 }
 ?>

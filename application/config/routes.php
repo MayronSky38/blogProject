@@ -49,17 +49,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
-$route ['(:any)/(:num)/banComent/(:num)/(:num)'] = 'Coment_controller/banComent/$2/$3/$4';	//Ruta per esborrar comentaris. $1 -> nom del topic, $2 -> id del post, $3 -> id del comentari
-$route ['(:any)/(:num)/deleteComent/(:num)'] = 'Coment_controller/deleteComent/$2/$3';	//Ruta per esborrar comentaris. $1 -> nom del topic, $2 -> id del post, $3 -> id del comentari
+//Ruta per editar un comentari. $1 -> nom del topic, $2 -> id del post, $3 id del comentari.
+$route['(:any)/(:num)/editComent/(:num)'] = 'Coment_controller/editComent/$2/$3';
+//Ruta per editar un post. $1 -> nom del topic, $2 -> id del post
+$route ['(:any)/(:num)/editPost'] = 'Post_controller/editPost/$2';
+//Ruta per banear comentaris. $1 -> nom del topic, $2 -> id del post, $3 -> id del comentari, $4 -> 0 per banear i 1 per llevar el ban
+$route ['(:any)/(:num)/banComent/(:num)/(:num)'] = 'Coment_controller/banComent/$2/$3/$4';
+
+//Ruta per esborrar comentaris. $1 -> nom del topic, $2 -> id del post, $3 -> id del comentari	
+$route ['(:any)/(:num)/deleteComent/(:num)'] = 'Coment_controller/deleteComent/$2/$3';
+
+//Ruta per banear posts. $1 -> nom del topic, $2 -> id del post, $3 -> 0 per banear i 1 per llevar el ban
 $route['(:any)/banPost/(:num)/(:num)'] = 'Post_controller/banPost/$2/$3';
-$route['(:any)/deletePost/(:num)'] = 'Post_controller/deletePost/$2';					//Ruta per esborrar posts. $1 -> nom del topic, $2 -> id del post.
-$route['(:any)/(:num)/createComent'] = 'Coment_controller/createComent/$1/$2';			//Ruta per crear comentaris. $1 -> nom del topic, $2 -> id del post.
-$route['(:any)/createPost'] = 'Post_controller/createPost/$1';							//Ruta per crear posts. El parametre fa referencia al nom del topic.
-$route['(:any)/post/(:num)'] = 'Coment_controller/listAllComents/$2'; 					//Llistar els comentaris d'un post a un topic. $1 name topic $2 idPost
-$route['(:any)/(:num)'] = 'Post_controller/listAllPosts/$2'; 							//Llistar els posts d'un topic.  	$1 name Topic $2 id Topic
-$route['logout'] = 'User_controller/logout';											//Ruta per fer logout de la pagina. Redirigit a home.
-$route['login'] = 'User_controller/login';												//Ruta per fer login a la pagina. Redirigit a home.
-$route['home'] = 'Topic_controller/listAllTopics';										//Pagina principal del blog.
+
+//Ruta per esborrar posts. $1 -> nom del topic, $2 -> id del post.
+$route['(:any)/deletePost/(:num)'] = 'Post_controller/deletePost/$2';	
+
+//Ruta per crear comentaris. $1 -> nom del topic, $2 -> id del post.				
+$route['(:any)/(:num)/createComent'] = 'Coment_controller/createComent/$1/$2';
+
+//Ruta per crear posts. El parametre fa referencia al nom del topic.			
+$route['(:any)/createPost'] = 'Post_controller/createPost/$1';
+
+//Llistar els comentaris d'un post a un topic. $1 name topic $2 idPost
+$route['(:any)/post/(:num)'] = 'Coment_controller/listAllComents/$2'; 
+
+//Llistar els posts d'un topic.  	$1 name Topic $2 id Topic					
+$route['(:any)/(:num)'] = 'Post_controller/listAllPosts/$2';
+
+//Ruta per fer logout de la pagina. Redirigit a home. 							
+$route['logout'] = 'User_controller/logout';
+
+//Ruta per fer login a la pagina. Redirigit a home.											
+$route['login'] = 'User_controller/login';
+
+//Pagina principal del blog.												
+$route['home'] = 'Topic_controller/listAllTopics';										
 
 
 $route['inserts'] = 'AutoInserts_controller/generate';

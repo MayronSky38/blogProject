@@ -117,6 +117,39 @@ class Post_controller extends CI_Controller {
     }
 
 
+    public function editPost($idPost = null){
+        if($idPost === null){
+                show_404();
+            }
+        else{
+            $post = $this->Post_model->getPostInfo($idPost);
+
+            $this->load->library('form_validation'); 
+            $this->form_validation->set_rules('content', 'Content', 'required');
+
+            $topicName = $post["name"];
+
+            if ($this->form_validation->run() == false)
+            {
+                $this->load->view('postEdit_view', $post);
+            }
+            else 
+            {          
+                $content = $this->input->post('content');
+
+                $result = $this->Post_model->editPost($idPost, $content);
+                if($result){
+                    redirect("http://localhost/codeigniter/index.php/$topicName/post/$idPost");
+                }
+                else{
+                    $this->load->view('postEdit_view', $post);
+                }
+
+            }
+        }
+    }
+
+
 }
 
 ?>

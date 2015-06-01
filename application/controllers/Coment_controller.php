@@ -102,7 +102,41 @@ class Coment_controller extends CI_Controller {
         }
     }
 
-    
+
+    public function editComent($idPost = null, $idComent = null){
+        if($idPost === null || $idComent === null){
+            show_404();
+        }
+        else{
+            
+            $coment = $this->Coment_model->getComentInfo($idPost, $idComent);
+
+            $this->load->library('form_validation'); 
+            $this->form_validation->set_rules('content', 'Content', 'required');
+
+            $topicName = $coment["name"];
+
+            if ($this->form_validation->run() == false)
+            {
+                $this->load->view('comentEdit_view', $coment);
+            }
+            else 
+            {          
+                $content = $this->input->post('content');
+
+                $result = $this->Coment_model->editComent($idPost, $idComent, $content);
+                if($result){
+                    redirect("http://localhost/codeigniter/index.php/$topicName/post/$idPost");
+                }
+                else{
+                    $this->load->view('comentEdit_view', $coment);
+                }
+
+            }
+        }
+    }
+
+
 }
 
 ?>
