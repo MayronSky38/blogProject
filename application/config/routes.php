@@ -49,7 +49,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+$route ['(:any)/(:num)/banComent/(:num)/(:num)'] = 'Coment_controller/banComent/$2/$3/$4';	//Ruta per esborrar comentaris. $1 -> nom del topic, $2 -> id del post, $3 -> id del comentari
 $route ['(:any)/(:num)/deleteComent/(:num)'] = 'Coment_controller/deleteComent/$2/$3';	//Ruta per esborrar comentaris. $1 -> nom del topic, $2 -> id del post, $3 -> id del comentari
+$route['(:any)/banPost/(:num)/(:num)'] = 'Post_controller/banPost/$2/$3';
 $route['(:any)/deletePost/(:num)'] = 'Post_controller/deletePost/$2';					//Ruta per esborrar posts. $1 -> nom del topic, $2 -> id del post.
 $route['(:any)/(:num)/createComent'] = 'Coment_controller/createComent/$1/$2';			//Ruta per crear comentaris. $1 -> nom del topic, $2 -> id del post.
 $route['(:any)/createPost'] = 'Post_controller/createPost/$1';							//Ruta per crear posts. El parametre fa referencia al nom del topic.

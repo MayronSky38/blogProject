@@ -8,6 +8,7 @@ class Post_model extends CI_Model{
 
 
 	public function getPosts($idTopic){
+		$this->db->order_by("publicDate", "DESC");	
 		$query = $this->db->get_where("post", array("fk_idTopic" => $idTopic) );
 		return $query->result_array();
 	}
@@ -15,7 +16,7 @@ class Post_model extends CI_Model{
 
 	public function getPostInfo($idPost){
 		$query = $this->db->query(
-			"SELECT post.idPost, post.title, post.content, post.publicDate, 
+			"SELECT post.idPost, post.title, post.content, post.publicDate, post.banned, 
 			user.nickName, topic.idTopic, topic.name
 			FROM post
 			INNER JOIN topic ON topic.idTopic = post.fk_idTopic
@@ -67,6 +68,14 @@ class Post_model extends CI_Model{
 			$this->db->delete("coment", array("fk_idPost" => $idPost));
 			return true; 
 		}
+	}
+
+	public function banPost($idPost, $banned){
+		$this->db->where('idPost', $idPost);
+		$this->db->update('post', array("banned" => $banned));  
+		$this->db->where('fk_idPost', $idPost);
+		$this->db->update('coment', array("banned" => $banned));
+		return true; 
 	}
 }
 

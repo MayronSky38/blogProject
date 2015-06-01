@@ -5,13 +5,13 @@
 <body>
 	<?php session_start(); ?>
 	<h1> You are at the topic: <?php echo $post["name"] ?> </h1>
-	<h2>Coments for the post: <?php echo $post["title"] ?></h2>
+	<h2>Coments for the post: <?php echo $post["title"] . $post["banned"] ?></h2>
 
 	<div class = "postContent">
 		<p> <?php echo $post["content"] ?> </p>
 		<p> By <?php echo $post["nickName"] ?> at <?php echo $post["publicDate"] ?> </p>
 	</div>
-	<?php if( isset($_SESSION["nickName"]) ){
+	<?php if( (isset($_SESSION["nickName"])) && $post["banned"] == 0){
 	?>
 	<form action="/codeigniter/index.php/<?php echo strtolower($post['name']) . "/" . $post['idPost'] ?>/createComent">
 	    <input type="submit" value="Coment this post">
@@ -30,8 +30,17 @@
 				?>
 					<form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ?>/<?php echo $post['idPost']?>/deleteComent/<?php echo $coments[$i]['idComent']?>">
 					    <input type="submit" value="Delete this coment">
-					</form>			
-				<?php } ?>
+					</form>
+					<?php if($coments[$i]['banned'] == 0){ ?>
+						<form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ."/". $post['idPost'] . "/banComent/" . $coments[$i]['idComent']?>/1">
+						    <input type="submit" value="Ban this post">
+						</form>		
+					<?php } else{ ?>
+						<form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ."/". $post['idPost'] . "/banComent/" . $coments[$i]['idComent']?>/0">
+					    <input type="submit" value="Not banned anymore">
+						</form>	
+						<?php } 	 	 
+					} ?>			
 				</div>
 
 		<?php endfor; } else{?>

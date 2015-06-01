@@ -83,7 +83,26 @@ class Coment_controller extends CI_Controller {
 
     }
 
+    public function banComent($idPost = null, $idComent = null, $banned = null){
+        if($idPost === null || $idComent === null || $banned === null){
+            show_404();
+        }
+        else{
+            $data = $this->Post_model->getByPostTopicInfo($idPost);
+            $topicName = $data['name'];
 
+            $result = $this->Coment_model->banComent($idPost, $idComent, $banned);
+            if($result){
+                
+                redirect("http://localhost/codeigniter/index.php/$topicName/post/$idPost");
+            }
+            else{
+               ///show message error. 
+            }
+        }
+    }
+
+    
 }
 
 ?>

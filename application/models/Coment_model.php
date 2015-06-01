@@ -9,7 +9,7 @@ class Coment_model extends CI_Model{
 
 	public function getComents($idPost){
 		$query = $this->db->query(
-			"SELECT coment.idComent, coment.content, coment.publicDate, user.nickName
+			"SELECT coment.idComent, coment.content, coment.publicDate, coment.banned, user.nickName
 			FROM coment
 			INNER JOIN user ON coment.fk_idUser = user.idUser
 			WHERE coment.fk_idPost = $idPost"
@@ -46,6 +46,14 @@ class Coment_model extends CI_Model{
 		{    
 			return true; 
 		}
+	}
+
+
+	public function banComent($idPost, $idComent, $banned){
+		$this->db->where('fk_idPost', $idPost);
+		$this->db->where('idComent', $idComent);
+		$this->db->update('coment', array("banned" => $banned));  
+		return true; 
 	}
 
 

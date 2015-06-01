@@ -96,6 +96,27 @@ class Post_controller extends CI_Controller {
     }
 
 
+    public function banPost($idPost = null, $banned = null){
+        if($idPost === null || $banned === null){
+                show_404();
+            }
+        else{        
+            $data = $this->Post_model->getByPostTopicInfo($idPost);
+            $topicName = $data['name'];
+            $topicId = $data['idTopic'];
+
+            $result = $this->Post_model->banPost($idPost, $banned);
+            if($result){            
+                redirect("http://localhost/codeigniter/index.php/$topicName/$topicId");
+            }
+            else{
+               ///show message error. 
+            }
+        }
+
+    }
+
+
 }
 
 ?>

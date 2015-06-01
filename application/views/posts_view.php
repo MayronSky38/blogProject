@@ -22,8 +22,17 @@
 			?>
 			<form action="/codeigniter/index.php/<?php echo strtolower($topic['name']) ?>/deletePost/<?php echo $posts[$i]['idPost']?>">
 			    <input type="submit" value="Delete this post">
-			</form>			
-		<?php } ?>
+			</form>	
+			<?php if($posts[$i]['banned'] == 0){ ?>
+				<form action="/codeigniter/index.php/<?php echo strtolower($topic['name']) ?>/banPost/<?php echo $posts[$i]['idPost']?>/1">
+				    <input type="submit" value="Ban this post">
+				</form>		
+			<?php } else{ ?>
+				<form action="/codeigniter/index.php/<?php echo strtolower($topic['name']) ?>/banPost/<?php echo $posts[$i]['idPost']?>/0">
+			    <input type="submit" value="Not banned anymore">
+				</form>	
+				<?php } 	 	 
+		}?>
 		</div>
 	<?php endfor ?>
 	<div class="footer">
