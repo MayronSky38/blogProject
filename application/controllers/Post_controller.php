@@ -42,8 +42,11 @@ class Post_controller extends CI_Controller {
             $this->form_validation->set_rules('title', 'Title', 'required');
             $this->form_validation->set_rules('content', 'Content', 'required');
                    
-            $data['topicName'] = $topicName; 
-               
+            $data['topicName'] = $topicName;
+
+            $topicId = $this->Topic_model->getIdTopic($topicName);
+            $idTopic = $topicId["idTopic"];
+            $data['idTopic'] = $idTopic;
             if ($this->form_validation->run() == false)
             {
                     $this->load->view('postCreation_view', $data);
@@ -60,8 +63,7 @@ class Post_controller extends CI_Controller {
                 $time = time();
                 $dateTime = mdate($datestring, $time);   
 
-                $topicId = $this->Topic_model->getIdTopic($topicName);
-                $idTopic = $topicId["idTopic"]; 
+                 
 
                 $this->Post_model->createPost($lastId, $title, $content, $dateTime, $_SESSION["idUser"], $idTopic);
                 redirect("http://localhost/codeigniter/index.php/$topicName/post/$lastId");

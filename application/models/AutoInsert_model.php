@@ -51,7 +51,7 @@ class AutoInsert_model extends CI_Model{
 				"description" => "In here goes everything else."
 			)
 		);
-		$this->db->insert_batch("topic", $topicData);
+		//$this->db->insert_batch("topic", $topicData);
 
 		$postData = array(); //"idPost" "title" "content" "publicDate" "fk_idUser" "banned" "fk_idTopic"
 		$postCounter = 0;
@@ -89,12 +89,12 @@ class AutoInsert_model extends CI_Model{
 			}
 			
 		}
-		$this->db->insert_batch("post", $postData);
+		//$this->db->insert_batch("post", $postData);
 
-		$comentData = array(); // idComent, fk_idPost, content, publicDate, fk_iduser, banned
-		$comentCounter = 0;
+		$comentData = array(); // idComent, fk_idPost, content, publicDate, fk_iduser, banned		
 		for($i = 0; $i < count($postData); $i++){
 			$array = array();
+			$comentCounter = 0;
 			for($j = 0; $j < 4; $j++){
 				$array["idComent"] = $comentCounter;			
 				switch ($j){

@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>Login</title>
+<title>Post</title>
 </head>
 <body>
 
@@ -19,6 +19,8 @@
 <div><input type="submit" value="Submit" /></div>
 
 </form>
-
+<div class="footer">
+	<a href="/codeigniter/index.php/<?php echo $topicName ."/". $idTopic ?>" > Go back </a>
+</div>
 </body>
 </html>

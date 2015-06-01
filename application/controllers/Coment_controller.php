@@ -19,6 +19,49 @@ class Coment_controller extends CI_Controller {
     	   $this->load->view("coments_view", $data);
     	}
     }
+
+    public function createComent($topicName = null, $idPost = null){
+        if($topicName === null || $idPost === null){
+            show_404();
+        }
+        else{
+            $this->load->helper(array('form', 'url'));
+
+            $this->load->library('form_validation');
+            $this->load->helper('date');
+            
+
+            $this->form_validation->set_rules('content', 'Content', 'required');
+                   
+            $data['topicName'] = $topicName; 
+            $postData = $this->Post_model->getPostInfo($idPost);
+            $data['postTitle'] = $postData['title'];
+            $data['idPost'] = $idPost;
+
+            $comentId = $this->Coment_model->getLastComentId($idPost);
+            $lastId = $comentId["lastId"];
+            if($lastId === null){
+                $lastId = 0;
+            }
+            if ($this->form_validation->run() == false)
+            {
+                    $this->load->view('comentCreation_view', $data);
+            }
+            else 
+            {          
+                $content = $this->input->post('content');
+
+
+                $datestring = '%Y-%m-%d %h:%i:%s';
+                $time = time();
+                $dateTime = mdate($datestring, $time);   
+
+                session_start();
+                $this->Coment_model->createComent($lastId, $idPost, $content, $dateTime, $_SESSION["idUser"]);
+                redirect("http://localhost/codeigniter/index.php/$topicName/post/$idPost");
+            }
+        }
+    }
 }
 
 ?>
