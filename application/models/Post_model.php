@@ -21,6 +21,26 @@ class Post_model extends CI_Model{
 		return $query->result_array();
 	}
 
+	/*
+SELECT post.*, c1.publicDate, c1.content,     
+	CASE
+        WHEN c1.publicDate IS NULL THEN post.publicDate
+        ELSE c1.publicDate
+    END as ordering_data;
+	CASE 
+		WHEN user.nickName IS NULL THEN post.fk_idUser
+        ELSE user.nickName
+	END AS user
+    FROM post 
+	LEFT JOIN coment c1
+	ON post.idPost = c1.fk_idPost
+	LEFT JOIN user
+	ON c1.fk_idUser = user.idUser
+	WHERE post.fk_idTopic = 0
+	GROUP BY idPost
+	ORDER BY ordering_data DESC
+	*/
+
 
 	public function getPostInfo($idPost){
 		$query = $this->db->query(
