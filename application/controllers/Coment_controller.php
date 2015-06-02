@@ -51,7 +51,7 @@ class Coment_controller extends CI_Controller {
                 $content = $this->input->post('content');
 
 
-                $datestring = '%Y-%m-%d %h:%i:%s';
+                $datestring = '%Y-%m-%d %H:%i:%s';
                 $time = time();
                 $dateTime = mdate($datestring, $time);   
 

@@ -8,12 +8,12 @@ class Post_model extends CI_Model{
 
 
 	public function getPosts($idTopic){
-		/*$this->db->order_by("publicDate", "DESC");	
-		$query = $this->db->get_where("post", array("fk_idTopic" => $idTopic) );*/
 		$query = $this->db->query(
-			"SELECT post.*  FROM post 
+			"SELECT post.*, user.nickName, c1.publicDate  FROM post 
 			INNER JOIN coment c1
 			ON post.idPost = c1.fk_idPost
+			INNER JOIN user
+            ON c1.fk_idUser = user.idUser
 			WHERE idComent IN (SELECT MAX(idComent) FROM coment c2 WHERE c1.fk_idPost = c2.fk_idPost GROUP BY fk_idPost)
 			AND post.fk_idTopic = $idTopic
 			ORDER BY c1.publicDate DESC;"

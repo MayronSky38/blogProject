@@ -1,6 +1,18 @@
 <html>
 <head>
 	<title> Coments for  <?php echo $post["title"]?></title>
+	<?php $this->load->helper('url'); ?>
+	<script type="text/javascript" src="<?php echo base_url("assets/js/jquery.js") ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url("assets/js/jquery.dataTables.js") ?>" ></script>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url("assets/css/jquery.dataTables.css") ?>"/>
+
+	<script type="text/javascript"> 
+	$(document).ready(function() {
+	    $('#comentsTable').DataTable( {
+	    	"order": [[ 1, "desc" ]]
+	    });
+	} );
+	</script>
 </head>
 <body>
 	<?php session_start(); ?>
@@ -11,7 +23,7 @@
 		<p> <?php echo $post["content"] ?> </p>
 		<p> By <?php echo $post["nickName"] ?> at <?php echo $post["publicDate"] ?> </p>
 		<?php if( ( isset($_SESSION["nickName"]) ) && ($post["nickName"] === $_SESSION["nickName"] || $_SESSION["typeUser"] === "Admin") && ($post["banned"] == 0) ){?>
-		<form action="/codeigniter/index.php/<?php echo strtolower($post['name']) . "/" . $post['idPost'] ?>/editPost">
+		<form action="<?php echo base_url() . strtolower($post['name']) . "/" . $post['idPost'] ?>/editPost">
 	   		<input type="submit" value="Edit post">
 		</form>
 		<?php } else if ($post["banned"] != 0){?>
@@ -22,7 +34,7 @@
 
 	<?php if( (isset($_SESSION["nickName"])) && $post["banned"] == 0){
 	?>
-	<form action="/codeigniter/index.php/<?php echo strtolower($post['name']) . "/" . $post['idPost'] ?>/createComent">
+	<form action="<?php echo base_url() .  strtolower($post['name']) . "/" . $post['idPost'] ?>/createComent">
 	    <input type="submit" value="Coment this post">
 	</form>
 	<?php } ?>
@@ -38,7 +50,7 @@
 				<th> Content </th>
 				<th> Published </th>
 				<th> Author </th>
-				<th></th> 
+				<th> </th> 
 				<?php if( (isset($_SESSION["nickName"]) ) && $_SESSION["typeUser"] === "Admin"){ ?>
 					<th></th>
 					<th></th>
@@ -58,30 +70,34 @@
 				<?php } 
 		        if( isset($_SESSION["nickName"]) ){
 			        if( ($coments[$i]["nickName"] === $_SESSION["nickName"] || $_SESSION["typeUser"] === "Admin") && ($coments[$i]["banned"] == 0) ){ ?>
-					<td><form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ."/". $post['idPost'] . "/editComent/" . $coments[$i]['idComent']?>?>">
+					<td><form action="<?php echo base_url() . strtolower($post['name']) ."/". $post['idPost'] . "/editComent/" . $coments[$i]['idComent']?>?>">
 				   		<input type="submit" value="Edit coment">
 					</form></td>
 					 
 					<?php }
+					else { ?>
+						<td> </td>
+					<?php }
 					if( $_SESSION["typeUser"] === "Admin" && ($coments[$i]["banned"] == 0) ){
 					?>
-						<td><form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ?>/<?php echo $post['idPost']?>/deleteComent/<?php echo $coments[$i]['idComent']?>">
+						<td><form action="<?php echo base_url() .  strtolower($post['name']) ?>/<?php echo $post['idPost']?>/deleteComent/<?php echo $coments[$i]['idComent']?>">
 						    <input type="submit" value="Delete this coment">
 						</form></td>
 						<?php }
 						if($_SESSION["typeUser"] === "Admin" && $post["banned"] == 0){
 							if($coments[$i]['banned'] == 0){ ?>
-								<td><form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ."/". $post['idPost'] . "/banComent/" . $coments[$i]['idComent']?>/1">
+								<td><form action="<?php echo base_url() .  strtolower($post['name']) ."/". $post['idPost'] . "/banComent/" . $coments[$i]['idComent']?>/1">
 								    <input type="submit" value="Ban this coment">
 								</form></td>		
 							<?php } else{ ?>
-								<td><form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ."/". $post['idPost'] . "/banComent/" . $coments[$i]['idComent']?>/0">
+								<td><form action="<?php echo base_url() .  strtolower($post['name']) ."/". $post['idPost'] . "/banComent/" . $coments[$i]['idComent']?>/0">
 							    	<input type="submit" value="Not banned anymore">
 								</form></td>	
 								<?php } 
 						}
-				}?>			
-			
+				} else{?>			
+					<td> </td>
+				<?php } ?>
 				</tr>
 		<?php endfor; 
 	}
@@ -102,17 +118,17 @@
 	</fieldset>
 
 	<div class="footer">
-		<a href="/codeigniter/index.php/<?php echo strtolower($post['name'])?> "> Go back </a>
+		<a href="<?php echo base_url() . strtolower($post['name'])?> "> Go back </a>
 	</div>
 	<div class="login">
 		<?php
 		if( isset($_SESSION["nickName"]) ){
 			echo "Logged as : " . $_SESSION["nickName"] . " with the id: " . $_SESSION["idUser"] . " as " . $_SESSION["typeUser"];
 			?>	
-			<a href="/codeigniter/index.php/logout/<?php echo strtolower($post['name']) ."/". $post['idPost']?>"> Logout </a> 
+			<a href="<?php echo base_url("logout") ."/". strtolower($post['name']) ."/". $post['idPost']?>"> Logout </a> 
 		<?php
 		}  else{ ?>
-			<a href="/codeigniter/index.php/login/<?php echo strtolower($post['name']) ."/". $post['idPost']?>"> Login </a> 
+			<a href="<?php echo base_url("login") ."/". strtolower($post['name']) ."/". $post['idPost']?>"> Login </a> 
 		<?php } ?>
 	</div>
 </body>

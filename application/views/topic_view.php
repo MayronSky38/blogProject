@@ -1,12 +1,24 @@
 <html>
 <head>
 	<title> Blog </title>
+	<?php $this->load->helper('url'); ?>
+	<script type="text/javascript" src="<?php echo base_url("assets/js/jquery.js") ?>" ></script>
+	<script type="text/javascript" src="<?php echo base_url("assets/js/jquery.dataTables.js") ?>" ></script>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url("assets/css/jquery.dataTables.css") ?>"/>
+
+	<script type="text/javascript"> 
+	$(document).ready(function() {
+	    $('#topicTable').DataTable({
+	    	"order": [[ 0, "asc" ]]
+	    });
+	} );
+	</script>
 </head>
 <body>
 	<?php 	session_start(); ?>
 	<h2><?php echo $title ?></h2>
 
-	<table id ="topicTable">
+	<table id="topicTable">
 		<thead>
 			<tr>
 				<th> <h1>Topic List</h1> </th>
@@ -16,8 +28,8 @@
 		<tbody>
 			<?php foreach ($topic as $topic_item): ?>
 					<tr>
-			        	<td> <h2><a href="/codeigniter/index.php/<?php echo strtolower($topic_item['name']) ?>"><?php echo $topic_item['name'] ?></a></h2> </td>
-			            <td> <h3><?php echo $topic_item['description'] ?></h3> </td>
+			        	<td> <a href="<?php echo base_url() . strtolower($topic_item['name']) ?>"><?php echo $topic_item['idTopic'] .")". $topic_item['name'] ?></a> </td>
+			            <td> <?php echo $topic_item['description'] ?> </td>
 			        </tr>    
 			<?php endforeach ?>
 		</tbody>
@@ -27,10 +39,10 @@
 	if( isset($_SESSION["nickName"]) ){
 		echo "Logged as : " . $_SESSION["nickName"] . "(" . $_SESSION["typeUser"] .").";
 		?>	
-		<a href="/codeigniter/index.php/logout"> Logout </a> 
+		<a href="<?php echo base_url("logout") ?> "> Logout </a> 
 	<?php
 	}  else{ ?>
-		<a href="/codeigniter/index.php/login"> Login </a> 
+		<a href="<?php echo base_url("login") ?> "> Login </a> 
 	<?php } ?>
 	</div>
 </body>
