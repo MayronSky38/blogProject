@@ -12,29 +12,46 @@
 		</form>
 	<?php } ?>
 
-	<?php for($i = 0; $i < count($posts); $i++): ?>
+	<table id ="postTable" border="5">
+		<thead>
+			<tr>
+				<th> Title </th>
+				<th> Published </th>
+				<th> Author </th>
+				<?php if( (isset($_SESSION["nickName"]) ) && $_SESSION["typeUser"] === "Admin"){ ?>
+					<th> Actions </th>
+				<?php }?>
+			</tr>
+		</thead>
+		<tbody>
+			<?php for($i = 0; $i < count($posts); $i++): ?>
+				<tr>
+			        <td> <h3><a href="/codeigniter/index.php/<?php echo strtolower($topic['name']) ?>/post/<?php echo $posts[$i]['idPost'] ?>"><?php echo $posts[$i]['title'] ?></a></h3> </td>
+			        <td> <?php echo $posts[$i]['publicDate'] ?></td>
+			        <td> <?php echo $user[$i]['nickName'] ?> </td>
+			        <?php if( (isset($_SESSION["nickName"]) ) && $_SESSION["typeUser"] === "Admin" ){
+					?>
+					<td>
+					<form action="/codeigniter/index.php/<?php echo strtolower($topic['name']) ?>/deletePost/<?php echo $posts[$i]['idPost']?>">
+					    <input type="submit" value="Delete this post">
+					</form>	
+					<?php if($posts[$i]['banned'] == 0){ ?>
+						<form action="/codeigniter/index.php/<?php echo strtolower($topic['name']) ?>/banPost/<?php echo $posts[$i]['idPost']?>/1">
+						    <input type="submit" value="Ban this post">
+						</form>
+						</td>		
+					<?php } else{ ?>
+						<form action="/codeigniter/index.php/<?php echo strtolower($topic['name']) ?>/banPost/<?php echo $posts[$i]['idPost']?>/0">
+					    <input type="submit" value="Not banned anymore">
+						</form>
+						</td>	
+						<?php } 	 	 
+					}?>
+				</tr>
+			<?php endfor; ?>
+		</tbody>
+	</table>
 
-	        <h3><a href="/codeigniter/index.php/<?php echo strtolower($topic['name']) ?>/post/<?php echo $posts[$i]['idPost'] ?>"><?php echo $posts[$i]['title'] ?></a></h3>
-	        <div class="main">
-	                <?php echo $posts[$i]['publicDate'] . " by " . $user[$i]['nickName']?>
-	        
-	        <?php if( (isset($_SESSION["nickName"]) ) && $_SESSION["typeUser"] === "Admin" ){
-			?>
-			<form action="/codeigniter/index.php/<?php echo strtolower($topic['name']) ?>/deletePost/<?php echo $posts[$i]['idPost']?>">
-			    <input type="submit" value="Delete this post">
-			</form>	
-			<?php if($posts[$i]['banned'] == 0){ ?>
-				<form action="/codeigniter/index.php/<?php echo strtolower($topic['name']) ?>/banPost/<?php echo $posts[$i]['idPost']?>/1">
-				    <input type="submit" value="Ban this post">
-				</form>		
-			<?php } else{ ?>
-				<form action="/codeigniter/index.php/<?php echo strtolower($topic['name']) ?>/banPost/<?php echo $posts[$i]['idPost']?>/0">
-			    <input type="submit" value="Not banned anymore">
-				</form>	
-				<?php } 	 	 
-		}?>
-		</div>
-	<?php endfor; ?>
 	<div class="footer">
 		<a href="/codeigniter/index.php/home" > Go back </a>
 	</div>

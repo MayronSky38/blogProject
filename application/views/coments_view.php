@@ -6,7 +6,7 @@
 	<?php session_start(); ?>
 	<h1> You are at the topic: <?php echo $post["name"] ?> </h1>
 	<h2>Coments for the post: <?php echo $post["title"] ?></h2>
-	
+
 	<div class = "postContent">
 		<p> <?php echo $post["content"] ?> </p>
 		<p> By <?php echo $post["nickName"] ?> at <?php echo $post["publicDate"] ?> </p>
@@ -30,16 +30,29 @@
 
 	<fieldset>
 		<legend> Coments </legend>
+		<table id ="comentsTable" >		
 	<?php 
-	if( $coments != null ){
-		for($i = 0; $i < count($coments); $i++): ?>
-			<div class="coment">
-		        <h3><?php echo $coments[$i]['content'] ?></a></h3>
-		        <p> <?php echo $coments[$i]['publicDate'] . " by " . $coments[$i]['nickName']?> </p>
-
+	if( $coments != null ){ ?>
+		<thead>
+			<tr>
+				<th> Content </th>
+				<th> Published </th>
+				<th> Author </th>
+				<?php if( (isset($_SESSION["nickName"]) ) && $_SESSION["typeUser"] === "Admin"){ ?>
+					<th> Actions </th>
+				<?php }?>
+			</tr>
+		</thead>
+		<tbody>
+		<?php for($i = 0; $i < count($coments); $i++): ?>
+			<tr>
+		        <td> <h3><?php echo $coments[$i]['content'] ?></a></h3> </td>
+		        <td> <h4><?php echo $coments[$i]['publicDate'] ?></h4> </td>
+		        <td> <h4><?php echo $coments[$i]['nickName']?></h4> </td>
+		        <td>
 		        <?php  
 					if ($coments[$i]["banned"] != 0 && $post["banned"] == 0){ ?>
-					<p> This coment is banned </p>
+					 This coment is banned
 				<?php } 
 		        if( isset($_SESSION["nickName"]) ){
 			        if( ($coments[$i]["nickName"] === $_SESSION["nickName"] || $_SESSION["typeUser"] === "Admin") && ($coments[$i]["banned"] == 0) ){ ?>
@@ -58,22 +71,32 @@
 							if($coments[$i]['banned'] == 0){ ?>
 								<form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ."/". $post['idPost'] . "/banComent/" . $coments[$i]['idComent']?>/1">
 								    <input type="submit" value="Ban this coment">
-								</form>		
+								</form></td>		
 							<?php } else{ ?>
 								<form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ."/". $post['idPost'] . "/banComent/" . $coments[$i]['idComent']?>/0">
 							    	<input type="submit" value="Not banned anymore">
-								</form>	
+								</form></td>	
 								<?php } 
 						}
 				}?>			
-			</div>
-
-		<?php endfor; } else{
+			
+				</tr>
+		<?php endfor; 
+	}
+		else{
 			?>
-			<div class="coment">
-				<p> There are no coments for this post so far. </p>
-			</div>
+			<thead>
+				<tr>
+					<th> </th>
+				</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td> There are no coments for this post so far. </td>
+			</tr>
 		<?php } ?>
+			</tbody>
+	</table>
 	</fieldset>
 
 	<div class="footer">
