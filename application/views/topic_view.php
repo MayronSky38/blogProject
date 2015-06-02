@@ -6,7 +6,7 @@
 	<?php 	session_start(); ?>
 	<h2><?php echo $title ?></h2>
 
-	<table id ="topicTable" border="10">
+	<table id ="topicTable">
 		<thead>
 			<tr>
 				<th> <h1>Topic List</h1> </th>

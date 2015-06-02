@@ -38,8 +38,10 @@
 				<th> Content </th>
 				<th> Published </th>
 				<th> Author </th>
+				<th></th> 
 				<?php if( (isset($_SESSION["nickName"]) ) && $_SESSION["typeUser"] === "Admin"){ ?>
-					<th> Actions </th>
+					<th></th>
+					<th></th>
 				<?php }?>
 			</tr>
 		</thead>
@@ -49,31 +51,31 @@
 		        <td> <h3><?php echo $coments[$i]['content'] ?></a></h3> </td>
 		        <td> <h4><?php echo $coments[$i]['publicDate'] ?></h4> </td>
 		        <td> <h4><?php echo $coments[$i]['nickName']?></h4> </td>
-		        <td>
+		        
 		        <?php  
 					if ($coments[$i]["banned"] != 0 && $post["banned"] == 0){ ?>
-					 This coment is banned
+					 <td> <h4>This coment is banned</h4> </td>
 				<?php } 
 		        if( isset($_SESSION["nickName"]) ){
 			        if( ($coments[$i]["nickName"] === $_SESSION["nickName"] || $_SESSION["typeUser"] === "Admin") && ($coments[$i]["banned"] == 0) ){ ?>
-					<form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ."/". $post['idPost'] . "/editComent/" . $coments[$i]['idComent']?>?>">
+					<td><form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ."/". $post['idPost'] . "/editComent/" . $coments[$i]['idComent']?>?>">
 				   		<input type="submit" value="Edit coment">
-					</form>
+					</form></td>
 					 
 					<?php }
 					if( $_SESSION["typeUser"] === "Admin" && ($coments[$i]["banned"] == 0) ){
 					?>
-						<form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ?>/<?php echo $post['idPost']?>/deleteComent/<?php echo $coments[$i]['idComent']?>">
+						<td><form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ?>/<?php echo $post['idPost']?>/deleteComent/<?php echo $coments[$i]['idComent']?>">
 						    <input type="submit" value="Delete this coment">
-						</form>
+						</form></td>
 						<?php }
 						if($_SESSION["typeUser"] === "Admin" && $post["banned"] == 0){
 							if($coments[$i]['banned'] == 0){ ?>
-								<form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ."/". $post['idPost'] . "/banComent/" . $coments[$i]['idComent']?>/1">
+								<td><form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ."/". $post['idPost'] . "/banComent/" . $coments[$i]['idComent']?>/1">
 								    <input type="submit" value="Ban this coment">
 								</form></td>		
 							<?php } else{ ?>
-								<form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ."/". $post['idPost'] . "/banComent/" . $coments[$i]['idComent']?>/0">
+								<td><form action="/codeigniter/index.php/<?php echo strtolower($post['name']) ."/". $post['idPost'] . "/banComent/" . $coments[$i]['idComent']?>/0">
 							    	<input type="submit" value="Not banned anymore">
 								</form></td>	
 								<?php } 
