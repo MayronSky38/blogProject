@@ -6,8 +6,18 @@
 
 <?php echo validation_errors(); ?>
 
-<form name="contact" method="post" action="/codeigniter/index.php/login">
-
+<?php
+$formAction = ""; 
+if($topicName == null && $idPost == null){ 
+	$formAction = "";
+}
+else if($idPost == null && $topicName != null){ 
+	$formAction = "/$topicName";
+}
+else if($idPost != null && $topicName != null){ 
+	$formAction = "/$topicName/$idPost";
+} ?>
+<form name="contact" method="post" action="/codeigniter/index.php/login<?php echo $formAction?> ">
 <h5>Username</h5>
 <input type="text" name="userName" value="<?php echo set_value('userName'); ?>" size="50"/>
 

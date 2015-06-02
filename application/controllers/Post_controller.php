@@ -11,13 +11,13 @@ class Post_controller extends CI_Controller {
             $this->load->helper(array('form', 'url'));
     }
 
-    public function listAllPosts($idTopic = null){
-    	if($idTopic === null){
+    public function listAllPosts($topicName = null){
+    	if($topicName === null){
     		show_404();
     	}
     	else{
-    		$data["topic"] = $this->Topic_model->getTopic($idTopic);
-    		$data["posts"] = $this->Post_model->getPosts($idTopic);
+    		$data["topic"] = $this->Topic_model->getTopic($topicName);
+    		$data["posts"] = $this->Post_model->getPosts($data["topic"]["idTopic"]);
     		for($i = 0; $i < count($data["posts"]); $i++){
     			$data["user"][$i] = $this->User_model->getUser($data["posts"][$i]["fk_idUser"]);
     		}
@@ -82,11 +82,11 @@ class Post_controller extends CI_Controller {
             $data = $this->Post_model->getByPostTopicInfo($idPost);
             $topicName = $data['name'];
             $topicId = $data['idTopic'];
-
+            $topicName = strtolower($topicName);
             $result = $this->Post_model->deletePost($idPost);
             if($result){
                 
-                redirect("http://localhost/codeigniter/index.php/$topicName/$topicId");
+                redirect("http://localhost/codeigniter/index.php/$topicName");
             }
             else{
                ///show message error. 
@@ -104,10 +104,10 @@ class Post_controller extends CI_Controller {
             $data = $this->Post_model->getByPostTopicInfo($idPost);
             $topicName = $data['name'];
             $topicId = $data['idTopic'];
-
+            $topicName = strtolower($topicName);
             $result = $this->Post_model->banPost($idPost, $banned);
             if($result){            
-                redirect("http://localhost/codeigniter/index.php/$topicName/$topicId");
+                redirect("http://localhost/codeigniter/index.php/$topicName");
             }
             else{
                ///show message error. 

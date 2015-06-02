@@ -8,7 +8,7 @@
 
 	<?php foreach ($topic as $topic_item): ?>
 
-	        <h3><a href="/codeigniter/index.php/<?php echo strtolower($topic_item['name']) ?>/<?php echo $topic_item['idTopic'] ?>"><?php echo $topic_item['name'] ?></a></h3>
+	        <h3><a href="/codeigniter/index.php/<?php echo strtolower($topic_item['name']) ?>"><?php echo $topic_item['name'] ?></a></h3>
 	        <div class="main">
 	                <?php echo $topic_item['description'] ?>
 	        </div>

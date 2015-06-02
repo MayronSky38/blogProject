@@ -18,7 +18,7 @@
 	        <div class="main">
 	                <?php echo $posts[$i]['publicDate'] . " by " . $user[$i]['nickName']?>
 	        
-	        <?php if( $_SESSION["typeUser"] === "Admin" ){
+	        <?php if( (isset($_SESSION["nickName"]) ) && $_SESSION["typeUser"] === "Admin" ){
 			?>
 			<form action="/codeigniter/index.php/<?php echo strtolower($topic['name']) ?>/deletePost/<?php echo $posts[$i]['idPost']?>">
 			    <input type="submit" value="Delete this post">
@@ -34,7 +34,7 @@
 				<?php } 	 	 
 		}?>
 		</div>
-	<?php endfor ?>
+	<?php endfor; ?>
 	<div class="footer">
 		<a href="/codeigniter/index.php/home" > Go back </a>
 	</div>
@@ -46,10 +46,10 @@
 		if( isset($_SESSION["nickName"]) ){
 			echo "Logged as : " . $_SESSION["nickName"] . " with the id: " . $_SESSION["idUser"] . " as " . $_SESSION["typeUser"];
 			?>	
-			<a href="/codeigniter/index.php/logout"> Logout </a> 
+			<a href="/codeigniter/index.php/logout/<?php echo strtolower($topic['name']) ?>"> Logout </a> 
 		<?php
 		}  else{ ?>
-			<a href="/codeigniter/index.php/login"> Login </a> 
+			<a href="/codeigniter/index.php/login/<?php echo strtolower($topic['name']) ?>"> Login </a> 
 		<?php } ?>
 	</div>	
 </body>

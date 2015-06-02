@@ -51,8 +51,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 //Ruta per editar un comentari. $1 -> nom del topic, $2 -> id del post, $3 id del comentari.
 $route['(:any)/(:num)/editComent/(:num)'] = 'Coment_controller/editComent/$2/$3';
+
 //Ruta per editar un post. $1 -> nom del topic, $2 -> id del post
 $route ['(:any)/(:num)/editPost'] = 'Post_controller/editPost/$2';
+
 //Ruta per banear comentaris. $1 -> nom del topic, $2 -> id del post, $3 -> id del comentari, $4 -> 0 per banear i 1 per llevar el ban
 $route ['(:any)/(:num)/banComent/(:num)/(:num)'] = 'Coment_controller/banComent/$2/$3/$4';
 
@@ -75,11 +77,19 @@ $route['(:any)/createPost'] = 'Post_controller/createPost/$1';
 $route['(:any)/post/(:num)'] = 'Coment_controller/listAllComents/$2'; 
 
 //Llistar els posts d'un topic.  	$1 name Topic $2 id Topic					
-$route['(:any)/(:num)'] = 'Post_controller/listAllPosts/$2';
+$route['(:any)'] = 'Post_controller/listAllPosts/$1';
 
+//Ruta per fer logout a la pagina. Redirigit a la llista de posts del topic.
+$route['logout/(:any)'] = 'User_controller/logout/$1';
+//Ruta per fer logout a la pagina. Redirigit a la llista de comentaris del post.
+$route['logout/(:any)/(:num)'] = 'User_controller/logout/$1/$2';
 //Ruta per fer logout de la pagina. Redirigit a home. 							
 $route['logout'] = 'User_controller/logout';
 
+//Ruta per fer login a la pagina. Redirigit a la llista de posts del topic.
+$route['login/(:any)'] = 'User_controller/login/$1';
+//Ruta per fer login a la pagina. Redirigit a la llista de comentaris del post.
+$route['login/(:any)/(:num)'] = 'User_controller/login/$1/$2';
 //Ruta per fer login a la pagina. Redirigit a home.											
 $route['login'] = 'User_controller/login';
 
