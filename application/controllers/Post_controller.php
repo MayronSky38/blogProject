@@ -20,6 +20,7 @@ class Post_controller extends CI_Controller {
     		$data["posts"] = $this->Post_model->getPosts($data["topic"]["idTopic"]);
     		for($i = 0; $i < count($data["posts"]); $i++){
     			$data["user"][$i] = $this->User_model->getUser($data["posts"][$i]["fk_idUser"]);
+                $data["lastUser"][$i] = $this->User_model->getUser($data["posts"][$i]["user"]);
     		}
     		
     		$this->load->view("posts_view", $data);

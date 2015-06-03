@@ -43,7 +43,7 @@
 			        <td> <a href="<?php echo base_url() . strtolower($topic['name']) ?>/post/<?php echo $posts[$i]['idPost'] ?>"><?php echo $posts[$i]['title'] ?></a> </td>
 			        <td> <?php echo $posts[$i]['publicDate'] ?> </td>
 			        <td> <?php echo $user[$i]['nickName'] ?> </td>
-			        <td> <?php echo $posts[$i]['publicDate'] . " by ". $posts[$i]['nickName'] ?> </td>
+			        <td> <?php echo $posts[$i]['ordering_data'] . " by ". $lastUser[$i]['nickName'] ?> </td>
 			        <?php if( (isset($_SESSION["nickName"]) ) && $_SESSION["typeUser"] === "Admin" ){
 					?>
 					<td><form action="<?php echo base_url() . strtolower($topic['name']) ?>/deletePost/<?php echo $posts[$i]['idPost']?>">
