@@ -10,22 +10,18 @@ class Post_model extends CI_Model{
 	public function getPosts($idTopic){
 		$query = $this->db->query(
 	"SELECT post.*,     
-	CASE
-        WHEN c1.publicDate IS NULL THEN post.publicDate
-        ELSE c1.publicDate
-    END as ordering_data,
 	CASE 
 		WHEN user.idUser IS NULL THEN post.fk_idUser
         ELSE user.idUser
-	END AS user
+	END AS user,
+    (SELECT MAX(c1.idComent) FROM coment c2 WHERE c1.idComent = c2.idComent GROUP BY c1.fk_idPost) as lastComent
     FROM post 
 	LEFT JOIN coment c1
 	ON post.idPost = c1.fk_idPost
 	LEFT JOIN user
 	ON c1.fk_idUser = user.idUser
 	WHERE post.fk_idTopic = 0 
-	GROUP BY idPost
-	ORDER BY ordering_data DESC;"
+	GROUP BY idPost;"
 	);
 		return $query->result_array();
 	}

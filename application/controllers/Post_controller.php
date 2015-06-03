@@ -8,6 +8,7 @@ class Post_controller extends CI_Controller {
             $this->load->model("Post_model");
             $this->load->model("Topic_model");
             $this->load->model("User_model");
+            $this->load->model("Coment_model");
             $this->load->helper(array('form', 'url'));
     }
 
@@ -20,7 +21,12 @@ class Post_controller extends CI_Controller {
     		$data["posts"] = $this->Post_model->getPosts($data["topic"]["idTopic"]);
     		for($i = 0; $i < count($data["posts"]); $i++){
     			$data["user"][$i] = $this->User_model->getUser($data["posts"][$i]["fk_idUser"]);
-                $data["lastUser"][$i] = $this->User_model->getUser($data["posts"][$i]["user"]);
+                if($data["posts"][$i]["lastComent"] != null){
+                   $data["lastComent"][$i] = $this->Coment_model->getComentInfo($data["posts"][$i]["idPost"], $data["posts"][$i]["lastComent"]); 
+                }
+                else{
+                    $data["lastComent"][$i] = array("publicDate" => $data["posts"][$i]["publicDate"], "nickName" => $data["user"][$i]["nickName"]);
+                }             
     		}
     		
     		$this->load->view("posts_view", $data);
