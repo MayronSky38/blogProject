@@ -1,0 +1,25 @@
+div.login{
+	position:fixed;
+	right:1%;
+	top:1%;
+}
+
+div.title{
+	position:fixed;
+	left:1%;
+	top:-1%;
+}
+
+div.footer{
+	position:fixed;
+	left:1%;
+	bottom:1%;
+	font-size:medium;
+}
+
+.postContent{
+	text-align:center;
+	color:black;
+	font-size:medium;
+	font-weight: bold;
+}

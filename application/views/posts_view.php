@@ -6,6 +6,11 @@
 	<script type="text/javascript" src="<?php echo base_url("assets/js/jquery.dataTables.js") ?>" ></script>
 	<link rel="stylesheet" type="text/css" href="<?php echo base_url("assets/css/jquery.dataTables.css") ?>"/>
 
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url("assets/Bootstrap/css/bootstrap.css") ?>"/>
+	<script type="text/javascript" src="<?php echo base_url("assets/Bootstrap/js/bootstrap.js") ?>" ></script>
+
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url("assets/style.css") ?>"/>
+
 	<script type="text/javascript"> 
 	$(document).ready(function() {
 	    $('#postTable').DataTable( {
@@ -14,9 +19,22 @@
 	} );
 	</script>
 </head>
-<body>
+<body class="container-fluid">
 	<?php session_start(); ?>
-	<h2><?php echo $topic["name"] ?></h2>
+
+	<div class="login">
+		<?php
+		if( isset($_SESSION["nickName"]) ){
+			echo "Logged as : " . $_SESSION["nickName"] . "(" . $_SESSION["typeUser"] .").";
+			?>	
+			<a href="<?php echo base_url("logout") ."/". strtolower($topic['name']) ?>"> Logout </a> 
+		<?php
+		}  else{ ?>
+			<a href="<?php echo base_url("login") ."/". strtolower($topic['name']) ?>"> Login </a> 
+		<?php } ?>
+	</div>	
+
+	<h3><?php echo $topic["name"] ?></h3>
 
 	<?php if( isset($_SESSION["nickName"]) ){ ?>
 		<form action="/codeigniter/index.php/<?php echo strtolower($topic['name']) ?>/createPost">
@@ -24,6 +42,7 @@
 		</form>
 	<?php } ?>
 
+<div class="container">
 	<table id ="postTable" >
 		<thead>
 			<tr>
@@ -65,23 +84,10 @@
 			<?php endfor; ?>
 		</tbody>
 	</table>
+</div>
 
 	<div class="footer">
 		<a href="<?php echo base_url("home") ?>" > Go back </a>
 	</div>
-
-	
-
-	<div class="login">
-		<?php
-		if( isset($_SESSION["nickName"]) ){
-			echo "Logged as : " . $_SESSION["nickName"] . " with the id: " . $_SESSION["idUser"] . " as " . $_SESSION["typeUser"];
-			?>	
-			<a href="<?php echo base_url("logout") ."/". strtolower($topic['name']) ?>"> Logout </a> 
-		<?php
-		}  else{ ?>
-			<a href="<?php echo base_url("login") ."/". strtolower($topic['name']) ?>"> Login </a> 
-		<?php } ?>
-	</div>	
 </body>
 </html>
