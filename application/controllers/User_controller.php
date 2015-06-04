@@ -6,7 +6,7 @@ class User_controller extends CI_Controller {
                 parent::__construct();
                 $this->load->model('User_model');
                 $this->load->helper('url');
-                session_start();
+                $this->load->library('session');
         }
 
         public function index()
@@ -44,20 +44,24 @@ class User_controller extends CI_Controller {
                 $password = $this->input->post('password');
                 $password = sha1($password);
                 $validation = $this->User_model->validateUser($nickName, $password);
+
                 if ($this->form_validation->run() == false)
                 {
-                        $data["topicName"] = $topicName;
-                        $data["idPost"] = $idPost;
-                        $this->load->view('login_view', $data);
+                        $data["title"] = "Login";
+                        $this->load->view('header', $data);
+                        $this->load->view('login_view');
                 }
                 else if ($validation != false)
-                {        
-                        $_SESSION["nickName"] = $nickName;  
-                        $_SESSION["idUser"] = $validation["idUser"];
-                        $_SESSION["typeUser"] = $validation["typeUser"]; 
+                {        $session_data = array(
+                                "nickName" => $nickName,
+                                "idUser" =>  $validation["idUser"],
+                                "typeUser" => $validation["typeUser"]
+                                );
+                        $this->session->set_userdata($session_data);
+                        
                         if($topicName === null && $idPost === null){
                                 //Login from topic list.
-                                redirect("http://localhost/codeigniter/index.php/home");
+                                redirect(base_url() . "home");
                         }
                         else if ($idPost === null && $topicName != null){
                                 ///Login from post list.
@@ -69,7 +73,7 @@ class User_controller extends CI_Controller {
                         }
                         else{
                                 //At any case, return to home.
-                                redirect("http://localhost/codeigniter/index.php/home");
+                                redirect(base_url() . "home");
                         }        
                         
                 }

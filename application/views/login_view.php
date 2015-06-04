@@ -1,32 +1,28 @@
-<html>
-<head>
-<title>Login</title>
-</head>
 <body>
 
 <?php echo validation_errors(); ?>
-
-<?php
-$formAction = ""; 
-if($topicName == null && $idPost == null){ 
-	$formAction = "";
-}
-else if($idPost == null && $topicName != null){ 
-	$formAction = "/$topicName";
-}
-else if($idPost != null && $topicName != null){ 
-	$formAction = "/$topicName/$idPost";
-} ?>
-<form name="contact" method="post" action="/codeigniter/index.php/login<?php echo $formAction?> ">
-<h5>Username</h5>
-<input type="text" name="userName" value="<?php echo set_value('userName'); ?>" size="50"/>
-
-<h5>Password</h5>
-<input type="password" name="password" value="<?php echo set_value('password'); ?>" size="50"/>
-
-<div><input type="submit" value="Submit" /></div>
-
-</form>
+<div class="container text-align-center" style="margin-top:10%;">
+	<h3 class="col-md-offset-4"> Login </h3>
+	<form class="form-horizontal" name="contact" method="post" action="<?php echo base_url() ."login"?> ">
+		<div class="form-group">
+			<p class="col-md-offset-2 control-label col-md-2">Username</p>
+			<div class="col-md-4"> 
+				<input class="form-control" type="text" name="userName" value="<?php echo set_value('userName'); ?>" size="50"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<p class="col-md-offset-2 control-label col-md-2">Password</p>
+			<div class="col-md-4"> 
+				<input class="form-control" type="password" name="password" value="<?php echo set_value('password'); ?>" size="50"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-md-offset-3 col-md-2">
+				<input type="submit" value="Submit"/>
+			</div>
+		</div>
+	</form>
+</div>
 
 </body>
 </html>

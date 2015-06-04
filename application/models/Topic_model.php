@@ -6,7 +6,7 @@ class Topic_model extends CI_Model{
 		$this->load->database();
 	}
 
-	public function getTopics(){
+	public function listAllTopics(){
 		$query = $this->db->get('topic');
         return $query->result_array();
 	}

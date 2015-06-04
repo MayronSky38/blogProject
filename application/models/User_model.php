@@ -33,4 +33,14 @@ class User_model extends CI_Model{
 	    }
 	}
 
+
+	public function getUserByComent($idComent, $idPost){
+		$query = $this->db->query(
+			"SELECT nickName FROM user 
+			INNER JOIN coment ON coment.fk_idUser = user.idUser 
+			WHERE coment.idComent = $idComent AND coment.fk_idPost = $idPost"
+			);
+		return $query->row_array();
+	}
+
 }

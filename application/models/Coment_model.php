@@ -18,6 +18,17 @@ class Coment_model extends CI_Model{
 	}
 
 
+	public function countComentRows($idPost){
+		$query = $this->db->query(
+			"SELECT coment.idComent, coment.content, coment.publicDate, coment.banned, user.nickName
+			FROM coment
+			INNER JOIN user ON coment.fk_idUser = user.idUser
+			WHERE coment.fk_idPost = $idPost"
+			);
+        return $query->num_rows();
+	}
+
+
 	public function getComentInfo($idPost, $idComent){
 		$query = $this->db->query(
 			"SELECT coment.idComent, coment.content, coment.banned, coment.publicDate, post.title, post.idPost, user.nickName, topic.name

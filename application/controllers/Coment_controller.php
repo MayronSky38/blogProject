@@ -8,6 +8,8 @@ class Coment_controller extends CI_Controller {
             $this->load->model("Coment_model");
             $this->load->model("Post_model");
             $this->load->helper(array('form', 'url'));
+            $this->load->library('pagination');
+            $this->load->library('session');    
     }
 
     public function listAllComents($idPost = null){
@@ -16,7 +18,9 @@ class Coment_controller extends CI_Controller {
     	}
     	else{
     	   $data["coments"] = $this->Coment_model->getComents($idPost);
-   		   $data["post"] = $this->Post_model->getPostInfo($idPost);
+   		   $data["post"] = $this->Post_model->getPostInfo($idPost);     
+           $data["title"] = "Blog";
+           $this->load->view("header", $data);
     	   $this->load->view("coments_view", $data);
     	}
     }
