@@ -41,7 +41,7 @@ class Post_controller extends CI_Controller {
             else{
                $data["lastComentUser"][$i] = "No Comments so far."; 
             }
-            }
+        }
 
         $this->pagination->initialize($config);
         $links = $this->pagination->create_links();
@@ -51,6 +51,9 @@ class Post_controller extends CI_Controller {
         $this->load->view("posts_view", $data);       
     }
 
+    public function listAllPostsAdmin(){
+
+    }
 
     public function listAllPostsByTopic($topicName = null){
     	if($topicName === null){
@@ -118,6 +121,47 @@ class Post_controller extends CI_Controller {
     }
 
 
+public function editPost($idPost = null){
+        if($idPost === null){
+                show_404();
+            }
+        else{
+            $data['title'] = "Blog";
+            $data['post'] = $this->Post_model->getPostInfo($idPost);
+            $data['topic'] = $this->Topic_model->listAllTopics();
+
+            $this->load->library('form_validation'); 
+            $this->form_validation->set_rules('title', 'Title', 'required');
+            $this->form_validation->set_rules('content', 'Content', 'required');
+
+            if ($this->form_validation->run() == false)
+            {
+                $this->load->view('header', $data);
+                $this->load->view('postCreation_view', $data);
+            }
+            else 
+            {          
+                $title = $this->input->post('title');
+                $content = $this->input->post('content');
+                $topicName = $this->input->post('topicName');
+
+                $topicId = $this->Topic_model->getIdTopic($topicName);
+                $idTopic = $topicId["idTopic"];
+
+                $result = $this->Post_model->editPost($idPost, $content, $idTopic);
+                if($result){
+                    redirect(base_url() . "post/$idPost");
+                }
+                else{
+                    $this->load->view('header', $data);
+                    $this->load->view('postCreation_view', $data);
+                }
+            }
+        }
+
+    }
+
+
     public function deletePost($idPost = null){
         if($idPost === null){
                 show_404();
@@ -158,39 +202,6 @@ class Post_controller extends CI_Controller {
             }
         }
 
-    }
-
-
-    public function editPost($idPost = null){
-        if($idPost === null){
-                show_404();
-            }
-        else{
-            $post = $this->Post_model->getPostInfo($idPost);
-
-            $this->load->library('form_validation'); 
-            $this->form_validation->set_rules('content', 'Content', 'required');
-
-            $topicName = $post["name"];
-
-            if ($this->form_validation->run() == false)
-            {
-                $this->load->view('postEdit_view', $post);
-            }
-            else 
-            {          
-                $content = $this->input->post('content');
-
-                $result = $this->Post_model->editPost($idPost, $content);
-                if($result){
-                    redirect("http://localhost/codeigniter/index.php/$topicName/post/$idPost");
-                }
-                else{
-                    $this->load->view('postEdit_view', $post);
-                }
-
-            }
-        }
     }
 
 

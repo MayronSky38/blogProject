@@ -9,6 +9,7 @@ class User_controller extends CI_Controller {
                 $this->load->library('session');
         }
 
+
         public function index()
         {
                 $data['user'] = $this->User_model->getUser();
@@ -16,6 +17,7 @@ class User_controller extends CI_Controller {
 
                 $this->load->view('users/showUsers', $data);
         }
+
 
         public function view($idUser = NULL)
         {
@@ -32,7 +34,7 @@ class User_controller extends CI_Controller {
         }
 
 
-        public function login($topicName = null, $idPost = null){
+        public function login($idPost = null){
                 $this->load->helper('form');
 
                 $this->load->library('form_validation');
@@ -44,61 +46,62 @@ class User_controller extends CI_Controller {
                 $password = $this->input->post('password');
                 $password = sha1($password);
                 $validation = $this->User_model->validateUser($nickName, $password);
-
-                if ($this->form_validation->run() == false)
-                {
-                        $data["title"] = "Login";
-                        $this->load->view('header', $data);
-                        $this->load->view('login_view');
-                }
-                else if ($validation != false)
+                
+                if ($validation != false)
                 {        $session_data = array(
                                 "nickName" => $nickName,
                                 "idUser" =>  $validation["idUser"],
                                 "typeUser" => $validation["typeUser"]
                                 );
                         $this->session->set_userdata($session_data);
-                        
-                        if($topicName === null && $idPost === null){
-                                //Login from topic list.
-                                redirect(base_url() . "home");
-                        }
-                        else if ($idPost === null && $topicName != null){
-                                ///Login from post list.
-                                redirect("http://localhost/codeigniter/index.php/$topicName");
-                        }
-                        else if($idPost != null && $topicName != null){
-                                //Login from coments list.
-                                redirect("http://localhost/codeigniter/index.php/$topicName/post/$idPost");
+
+                        if($validation["typeUser"] === "Admin"){
+                                if($idPost != null){
+                                        //Login from a post with an admin account.
+                                        redirect(base_url() . "admin/post/" . $idPost);               
+                                }
+                                else {
+                                        //Login from home with an admin account.
+                                        redirect(base_url() . "admin");
+                                        
+                                } 
                         }
                         else{
-                                //At any case, return to home.
-                                redirect(base_url() . "home");
-                        }        
-                        
-                }
-        }
-
-        public function logout($topicName = null, $idPost = null){
-                session_unset();
-                session_destroy();
-                if($topicName === null && $idPost === null){
-                        //Login from topic list.
-                        redirect("http://localhost/codeigniter/index.php/home");
-                }
-                else if ($idPost === null && $topicName != null){
-                        ///Login from post list.
-                        redirect("http://localhost/codeigniter/index.php/$topicName");
-                }
-                else if($idPost != null && $topicName != null){
-                        //Login from coments list.
-                        redirect("http://localhost/codeigniter/index.php/$topicName/post/$idPost");
+                                if($idPost != null){
+                                        //Login from a post.
+                                        redirect(base_url() . "post/" . $idPost);               
+                                }
+                                else {
+                                        //Login from home.
+                                        redirect(base_url() . "home");
+                                        
+                                } 
+                        }                           
                 }
                 else{
-                        //At any case, return to home.
-                        redirect("http://localhost/codeigniter/index.php/home");
-                } 
-        }  
+                        $data["title"] = "Login";
+                        $data["idPost"] = $idPost;
+                        $this->load->view('header', $data);
+                        $this->load->view('login_view', $data);     
+                }
+                
+        }
+
+
+        public function logout($idPost){
+                $data = array('nickName', 'idUser', 'typeUser');
+                $this->session->unset_userdata($data);
+
+                $this->session->sess_destroy();
+                if($idPost != null){
+                        //Logout from post.
+                        redirect(base_url() . "post/" . $idPost);                    
+                }
+                else{
+                        //Logout from home or post/coment creation/edit.
+                        redirect(base_url() . "home");    
+                }
+        }
 
 
 }

@@ -22,13 +22,24 @@
 	</div>
 	<ul class="nav navbar-nav navbar-right" style="margin-right:1%">  	
 		<?php
-		if( $this->session->nickName != null ){ ?>
-			<li><a href="<?php echo base_url("createPost") ?>"><span class="glyphicon glyphicon-plus"></span> Create new Post </a></li>
-			<li><a href="#"><span class="glyphicon glyphicon-user"></span> <?php echo "Logged as : " . $this->session->nickName . "(" . $this->session->typeUser .")."; ?> </a></li>
-			<li><a href="<?php echo base_url("logout") ?>"><span class="glyphicon glyphicon-log-out"></span> Logout </a></li> 
-		<?php
-		}  else{ ?>
-			<li><a href="<?php echo base_url("login") ?>"><span class="glyphicon glyphicon-log-in"></span> Login </a></li> 
-		<?php } ?>	
+		if( isset($test) ){ 
+			if( $this->session->nickName != null ){ ?>
+				<li><a href="<?php echo base_url("createPost") ?>"><span class="glyphicon glyphicon-plus"></span> Create new Post </a></li>
+				<li><a href="#"><span class="glyphicon glyphicon-user"></span> <?php echo "Logged as : " . $this->session->nickName . " (" . $this->session->typeUser .")."; ?> </a></li>
+				<li><a href="<?php echo base_url() ."logout/" . $post['idPost'] ?>"><span class="glyphicon glyphicon-log-out"></span> Logout </a></li> 
+			<?php
+			}  else{ ?>
+				<li><a href="<?php echo base_url() ."login/". $post['idPost'] ?>"><span class="glyphicon glyphicon-log-in"></span> Login </a></li> 
+			<?php } 
+		} else{ 
+			if( $this->session->nickName != null ){ ?>
+					<li><a href="<?php echo base_url("createPost") ?>"><span class="glyphicon glyphicon-plus"></span> Create new Post </a></li>
+					<li><a href="#"><span class="glyphicon glyphicon-user"></span> <?php echo "Logged as : " . $this->session->nickName . " (" . $this->session->typeUser .")."; ?> </a></li>
+					<li><a href="<?php echo base_url("logout") ?>"><span class="glyphicon glyphicon-log-out"></span> Logout </a></li> 
+				<?php
+			}  else{ ?>
+				<li><a href="<?php echo base_url("login") ?>"><span class="glyphicon glyphicon-log-in"></span> Login </a></li> 
+			<?php }
+		} ?>	
 	</ul>
 </nav>

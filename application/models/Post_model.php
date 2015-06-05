@@ -133,9 +133,9 @@ class Post_model extends CI_Model{
 	}
 
 
-	public function editPost($idPost, $newContent){
+	public function editPost($idPost, $newContent, $idTopic){
 		$this->db->where('idPost', $idPost);
-		$this->db->update('post', array("content" => $newContent));
+		$this->db->update('post', array("content" => $newContent, "fk_idTopic" => $idTopic));
 		return true;
 	}
 

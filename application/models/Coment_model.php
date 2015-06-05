@@ -31,11 +31,10 @@ class Coment_model extends CI_Model{
 
 	public function getComentInfo($idPost, $idComent){
 		$query = $this->db->query(
-			"SELECT coment.idComent, coment.content, coment.banned, coment.publicDate, post.title, post.idPost, user.nickName, topic.name
+			"SELECT coment.idComent, coment.content, coment.banned, coment.publicDate, post.title, post.idPost, user.nickName
 			FROM coment
 			INNER JOIN user ON coment.fk_idUser = user.idUser
 			INNER JOIN post ON coment.fk_idPost = post.idPost
-			INNER JOIN topic ON post.fk_idTopic = topic.idTopic
 			WHERE coment.fk_idPost = $idPost AND coment.idComent = $idComent"
 			);
         return $query->row_array();	

@@ -58,13 +58,14 @@ class AutoInsert_model extends CI_Model{
 		for($i = 0; $i < count($topicData); $i++){
 			$array = array();		
 			for($j = 0; $j < 3; $j++){
-			$array["idPost"] = $postCounter;			
+			$array["idPost"] = $postCounter;
+			$idTopic = $i + 1;			
 				switch ($j){
 					case 0:
 						$array["title"] = "First post for ". $topicData[$i]["name"] .".";
 						$array["content"] = "This is the content of my first post.";
 						$array["publicDate"] = "2015-05-28 10:".$i.$j.":00";
-						$array["fk_idTopic"] = $i;
+						$array["fk_idTopic"] = $idTopic;
 						$array["fk_idUser"] = 1;
 					break;
 
@@ -72,7 +73,7 @@ class AutoInsert_model extends CI_Model{
 						$array["title"] = "Second post for ". $topicData[$i]["name"] .".";
 						$array["content"] = "This is the content of my second post.";
 						$array["publicDate"] = "2015-05-29 10:".$i.$j.":00";
-						$array["fk_idTopic"] = $i;
+						$array["fk_idTopic"] = $idTopic;
 						$array["fk_idUser"] = 1;
 					break;
 
@@ -80,7 +81,7 @@ class AutoInsert_model extends CI_Model{
 						$array["title"] = "Third post for ". $topicData[$i]["name"] .".";
 						$array["content"] = "This is the content of my third post.";
 						$array["publicDate"] = "2015-05-30 10:".$i.$j.":00";
-						$array["fk_idTopic"] = $i;
+						$array["fk_idTopic"] = $idTopic;
 						$array["fk_idUser"] = 2;
 					break;
 				}

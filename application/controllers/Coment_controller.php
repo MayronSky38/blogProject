@@ -17,16 +17,17 @@ class Coment_controller extends CI_Controller {
     		show_404();
     	}
     	else{
-    	   $data["coments"] = $this->Coment_model->getComents($idPost);
-   		   $data["post"] = $this->Post_model->getPostInfo($idPost);     
-           $data["title"] = "Blog";
-           $this->load->view("header", $data);
-    	   $this->load->view("coments_view", $data);
+            $data["test"] = "value";
+    	    $data["coments"] = $this->Coment_model->getComents($idPost);
+   		    $data["post"] = $this->Post_model->getPostInfo($idPost);     
+            $data["title"] = "Blog";
+            $this->load->view("header", $data);
+    	    $this->load->view("coments_view", $data);
     	}
     }
 
-    public function createComent($topicName = null, $idPost = null){
-        if($topicName === null || $idPost === null){
+    public function createComent($idPost = null){
+        if($idPost === null){
             show_404();
         }
         else{   
@@ -35,33 +36,34 @@ class Coment_controller extends CI_Controller {
             
 
             $this->form_validation->set_rules('content', 'Content', 'required');
-                   
-            $data['topicName'] = $topicName; 
-            $postData = $this->Post_model->getPostInfo($idPost);
-            $data['postTitle'] = $postData['title'];
-            $data['idPost'] = $idPost;
+            
+            $data["test"] = "value";
+            $data["coments"] = $this->Coment_model->getComents($idPost);
+            $data["post"] = $this->Post_model->getPostInfo($idPost);
 
-            $comentId = $this->Coment_model->getLastComentId($idPost);
-            $lastId = $comentId["lastId"];
-            if($lastId === null){
-                $lastId = 0;
-            }
             if ($this->form_validation->run() == false)
             {
-                    $this->load->view('comentCreation_view', $data);
+                $data["title"] = "Blog";
+                $this->load->view("header", $data);
+                $this->load->view('comentCreation_view', $data);
             }
             else 
             {          
                 $content = $this->input->post('content');
 
+                $comentId = $this->Coment_model->getLastComentId($idPost);
+                $lastId = $comentId["lastId"];
+                if($lastId === null){
+                    $lastId = 0;
+                }
 
                 $datestring = '%Y-%m-%d %H:%i:%s';
                 $time = time();
                 $dateTime = mdate($datestring, $time);   
 
-                session_start();
-                $this->Coment_model->createComent($lastId, $idPost, $content, $dateTime, $_SESSION["idUser"]);
-                redirect("http://localhost/codeigniter/index.php/$topicName/post/$idPost");
+                $user = $this->session->idUser;
+                $this->Coment_model->createComent($lastId, $idPost, $content, $dateTime, $user);
+                redirect(base_url("post/$idPost"));
             }
         }
     }
@@ -78,7 +80,7 @@ class Coment_controller extends CI_Controller {
             $result = $this->Coment_model->deleteComent($idPost, $idComent);
             if($result){
                 
-                redirect("http://localhost/codeigniter/index.php/$topicName/post/$idPost");
+                redirect(base_url("post/$idPost"));
             }
             else{
                ///show message error. 
@@ -98,7 +100,7 @@ class Coment_controller extends CI_Controller {
             $result = $this->Coment_model->banComent($idPost, $idComent, $banned);
             if($result){
                 
-                redirect("http://localhost/codeigniter/index.php/$topicName/post/$idPost");
+                redirect(base_url("post/$idPost"));
             }
             else{
                ///show message error. 
@@ -111,31 +113,29 @@ class Coment_controller extends CI_Controller {
         if($idPost === null || $idComent === null){
             show_404();
         }
-        else{
+        else{   
+            $this->load->library('form_validation');
+            $this->load->helper('date');
             
-            $coment = $this->Coment_model->getComentInfo($idPost, $idComent);
 
-            $this->load->library('form_validation'); 
             $this->form_validation->set_rules('content', 'Content', 'required');
-
-            $topicName = $coment["name"];
+                   
+            $data["coments"] = $this->Coment_model->getComents($idPost);
+            $data["post"] = $this->Post_model->getPostInfo($idPost);
+            $data["comentToEdit"] = $this->Coment_model->getComentInfo($idPost, $idComent);
 
             if ($this->form_validation->run() == false)
             {
-                $this->load->view('comentEdit_view', $coment);
+                $data["title"] = "Blog";
+                $this->load->view("header", $data);
+                $this->load->view('comentCreation_view', $data);
             }
             else 
             {          
-                $content = $this->input->post('content');
+                $content = $this->input->post('content');  
 
-                $result = $this->Coment_model->editComent($idPost, $idComent, $content);
-                if($result){
-                    redirect("http://localhost/codeigniter/index.php/$topicName/post/$idPost");
-                }
-                else{
-                    $this->load->view('comentEdit_view', $coment);
-                }
-
+                $this->Coment_model->editComent($idPost, $idComent, $content);
+                redirect(base_url("post/$idPost"));
             }
         }
     }

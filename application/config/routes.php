@@ -50,26 +50,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 
+//When this route executes, a comment is banned or ban is removed, depending of second parameter.
+$route['post/(:num)/banComent/(:num)/(:num)'] = 'Coment_controller/banComent/$1/$2/$3';
+
+//When this route executes, a comment is eliminated by its id.
+$route['post/(:num)/deleteComent/(:num)'] = 'Coment_controller/deleteComent/$1/$2';
+
+//Displays the page for editing a coment.
+$route['post/(:num)/editComent/(:num)'] = 'Coment_controller/editComent/$1/$2';
+
+//Displays the page for comenting a post.
+$route['createComent/(:num)'] = 'Coment_controller/createComent/$1';
+
+//When this route executes, a post is banned or ban is removed, depending of second parameter.
 $route['banPost/(:num)/(:num)'] = 'Post_controller/banPost/$1/$2';
 
 //When this route executes, a post is eliminated by its Id.
 $route['deletePost/(:num)'] = 'Post_controller/deletePost/$1' ;
 
-//Displays de page for post creation.
+//Displays the page for editing a post.
+$route['editPost/(:num)'] = 'Post_controller/editPost/$1';
+
+//Displays the page for post creation.
 $route['createPost'] =  'Post_controller/createPost';
 
 //Lists all the coments for one post.
 $route['post/(:num)'] = 'Coment_controller/listAllComents/$1';
 
-//Destroys the actual session.
+//Destroys the actual session and returns to the post where the user were.
+$route['logout/(:num)'] = 'User_controller/logout/$1';
+
+//Destroys the actual session and returns to home.
 $route['logout'] = 'User_controller/logout';
 
-//Login page.
+//Login page and returns to the post where the user were.
+$route['login/(:num)'] = 'User_controller/login/$1';
+
+//Login page and returns to home.
 $route['login'] = 'User_controller/login';
 
 //Main page for the blog.												
 $route['home'] = 'Post_controller/listAllPosts';										
 
+//List of coments by post for an admin.
+$route['admin/post/(:num)'] = 'Coment_controller/listAllComentsAdmin/$1';
+
+//Main page for the admins.
+$route['admin'] = 'Post_controller/listAllPostsAdmin';
 
 $route['inserts'] = 'AutoInserts_controller/generate';
 $route['users/(:any)'] = 'User_controller/view/$1';
