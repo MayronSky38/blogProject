@@ -1,49 +1,52 @@
-<div class="container">
-	<table id ="postTable" >
+<script type="text/javascript"> 
+	$(document).ready(function() {
+	    $('#postTable').DataTable( {
+	    	"order": [[ 3, "desc" ]]
+	    });
+	} );
+</script>
+
+<div class="container" style="margin-top:5%">
+	<table id ="postTable">
 		<thead>
 			<tr>
 				<th> Title </th>
 				<th> Published </th>
 				<th> Author </th>
 				<th> Last comment </th>
-				<?php if( (isset($_SESSION["nickName"]) ) && $_SESSION["typeUser"] === "Admin"){ ?>
-					<th></th>
-					<th></th>
-				<?php }?>
+				<th></th>
+				<th></th>
 			</tr>
 		</thead>
 		<tbody>
-			<?php for($i = 0; $i < count($posts); $i++): ?>
+			<?php for($i = 0; $i < count($post); $i++): ?>
 				<tr>
-			        <td> <a href="<?php echo base_url() . strtolower($topic['name']) ?>/post/<?php echo $posts[$i]['idPost'] ?>"><?php echo $posts[$i]['title'] ?></a> </td>
-			        <td> <?php echo $posts[$i]['publicDate'] ?> </td>
+			        <td> <a href="<?php echo base_url() .'admin/post/' . $post[$i]['idPost']?>"> <?php echo $post[$i]['title'] ?> </a> </td>
+			        <td> <?php echo $post[$i]['publicDate'] ?> </td>
 			        <td> <?php echo $user[$i]['nickName'] ?> </td>
-			        <td> <?php echo $lastComent[$i]['publicDate'] . " by ". $lastComent[$i]['nickName'] ?> </td>
-			        <?php if( (isset($_SESSION["nickName"]) ) && $_SESSION["typeUser"] === "Admin" ){
-					?>
-					<td><form action="<?php echo base_url() . strtolower($topic['name']) ?>/deletePost/<?php echo $posts[$i]['idPost']?>">
+			        <?php if( isset($lastComentUser[$i]['nickName']) ){ ?>
+			        	<td> <?php echo $post[$i]['lastDate'] . " by ". $lastComentUser[$i]['nickName'] ?> </td>
+			        <?php } else{ ?>
+			        	<td> <?php echo $post[$i]['lastDate'] ?> </td>
+			        <?php } ?>
+					<td><form action="<?php echo base_url() .'/deletePost/'. $post[$i]['idPost']?>">
 					    <input type="submit" value="Delete this post">
 					</form></td>
-					<?php if($posts[$i]['banned'] == 0){ ?>
-						<td><form action="<?php echo base_url() . strtolower($topic['name']) ?>/banPost/<?php echo $posts[$i]['idPost']?>/1">
+					<?php if($post[$i]['banned'] == 0){ ?>
+						<td><form action="<?php echo base_url() . '/banPost/' . $post[$i]['idPost']?>/1">
 						    <input type="submit" value="Ban this post">
 						</form>
 						</td>		
 					<?php } else{ ?>
-						<td><form action="<?php echo base_url() . strtolower($topic['name']) ?>/banPost/<?php echo $posts[$i]['idPost']?>/0">
+						<td><form action="<?php echo base_url() . '/banPost/' . $post[$i]['idPost']?>/0">
 					    	<input type="submit" value="Not banned anymore">
 						</form>
 						</td>	
-						<?php } 	 	 
-					} ?>
+						<?php } ?>
 				</tr>
 			<?php endfor; ?>
 		</tbody>
 	</table>
 </div>
-
-	<div class="footer">
-		<a href="<?php echo base_url("home") ?>" > Go back </a>
-	</div>
 </body>
 </html>

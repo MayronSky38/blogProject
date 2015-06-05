@@ -25,6 +25,25 @@ class Post_model extends CI_Model{
 		return $query->result_array();
 	}
 
+
+	public function listAllPostsAdmin(){
+	$query = $this->db->query(
+			"SELECT post.*, 
+			(SELECT MAX(c1.idComent) FROM coment c2 WHERE c1.idComent = c2.idComent GROUP BY c1.fk_idPost) as lastComent,
+            CASE 
+				WHEN (SELECT MAX(c1.publicDate) FROM coment c3 WHERE c1.idComent = c3.idComent GROUP BY c1.fk_idPost) is null THEN post.publicDate
+                ELSE (SELECT MAX(c1.publicDate) FROM coment c3 WHERE c1.idComent = c3.idComent GROUP BY c1.fk_idPost)
+			END as lastDate
+			FROM post 
+            LEFT JOIN coment c1
+            ON c1.fk_idPost = post.idPost
+			GROUP BY fk_idPost
+            ORDER BY lastDate DESC"
+			);
+		return $query->result_array();
+	}
+
+
 	public function countPostRows(){
 		$query = $this->db->query(
 			"SELECT post.*, 

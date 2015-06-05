@@ -53,15 +53,23 @@
 			</div>
 		</div>
 	</form>
-	<?php if( isset($post['content']) ){ ?>
+
 	<div class="footer">
-		<a href="<?php echo base_url() . "post/" . $post['idPost'] ?>" > Go back </a>
+		<?php if($this->session->typeUser === "Admin"){ 
+			if( isset($post['content']) ){ ?>		
+				<a href="<?php echo base_url() . "admin/post/" . $post['idPost'] ?>" > Go back </a>
+			<?php } else{ ?>
+				<a href="<?php echo base_url() . "admin" ?>" > Go back </a>
+			<?php } 
+		} else{ 
+			if( isset($post['content']) ){ ?>
+				<a href="<?php echo base_url() . "post/" . $post['idPost'] ?>" > Go back </a>
+			<?php } else{ ?>
+				<a href="<?php echo base_url() . "home" ?>" > Go back </a>
+			<?php }
+		} ?> 
 	</div>
-	<?php } else{ ?>
-	<div class="footer">
-		<a href="<?php echo base_url() . "home" ?>" > Go back </a>
-	</div>
-	<?php } ?>
+	
 </div>
 </body>
 </html>

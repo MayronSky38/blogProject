@@ -26,6 +26,24 @@ class Coment_controller extends CI_Controller {
     	}
     }
 
+    public function listAllComentsAdmin($idPost = null){
+        if($this->session->typeUser === "Admin"){
+            if($idPost === null){
+                show_404();
+            }
+            else{
+                $data["test"] = "value";
+                $data["coments"] = $this->Coment_model->getComents($idPost);
+                $data["post"] = $this->Post_model->getPostInfo($idPost);     
+                $data["title"] = "Blog";
+                $this->load->view("header", $data);
+                $this->load->view("adminComents_view", $data);
+            }
+        } else{
+            redirect(base_url() . "post/" . $idPost);
+        }
+    }
+
     public function createComent($idPost = null){
         if($idPost === null){
             show_404();
@@ -63,7 +81,11 @@ class Coment_controller extends CI_Controller {
 
                 $user = $this->session->idUser;
                 $this->Coment_model->createComent($lastId, $idPost, $content, $dateTime, $user);
-                redirect(base_url("post/$idPost"));
+                if($this->session->typeUser === "Admin"){
+                        redirect(base_url() ."admin/post/" . $idPost);
+                }else{
+                    redirect(base_url("post/$idPost"));
+                }
             }
         }
     }
@@ -79,8 +101,11 @@ class Coment_controller extends CI_Controller {
 
             $result = $this->Coment_model->deleteComent($idPost, $idComent);
             if($result){
-                
-                redirect(base_url("post/$idPost"));
+                if($this->session->typeUser === "Admin"){
+                        redirect(base_url() ."admin/post/" . $idPost);
+                    }else{
+                    redirect(base_url("post/$idPost"));
+                }
             }
             else{
                ///show message error. 
@@ -99,8 +124,11 @@ class Coment_controller extends CI_Controller {
 
             $result = $this->Coment_model->banComent($idPost, $idComent, $banned);
             if($result){
-                
-                redirect(base_url("post/$idPost"));
+                if($this->session->typeUser === "Admin"){
+                        redirect(base_url() ."admin/post/" . $idPost);
+                 }else{
+                    redirect(base_url("post/$idPost"));
+                }
             }
             else{
                ///show message error. 
@@ -135,7 +163,12 @@ class Coment_controller extends CI_Controller {
                 $content = $this->input->post('content');  
 
                 $this->Coment_model->editComent($idPost, $idComent, $content);
-                redirect(base_url("post/$idPost"));
+
+                if($this->session->typeUser === "Admin"){
+                        redirect(base_url() ."admin/post/" . $idPost);
+                }else{
+                    redirect(base_url("post/$idPost"));
+                }
             }
         }
     }

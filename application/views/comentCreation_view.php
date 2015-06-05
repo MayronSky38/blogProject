@@ -55,8 +55,15 @@
 	<?php } ?>
 	</fieldset>
 </div>
-<div class="footer">
-	<a href="<?php echo base_url() . "post/" . $post['idPost'] ?> "> Go back </a>
+
+	<div class="footer">
+		<?php if($this->session->typeUser === "Admin"){ ?>
+			<a href="<?php echo base_url() . "admin/post/" . $post['idPost'] ?> "> Go back </a>
+		<?php } else{ ?>
+			<a href="<?php echo base_url() . "post/" . $post['idPost'] ?> "> Go back </a>
+		<?php } ?>
+	</div>
+	
 </div>
 </body>
 </html>

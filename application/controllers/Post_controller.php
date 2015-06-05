@@ -52,7 +52,25 @@ class Post_controller extends CI_Controller {
     }
 
     public function listAllPostsAdmin(){
-
+        if($this->session->typeUser === "Admin"){
+            $data["post"] = $this->Post_model->listAllPostsAdmin();
+            $data["topic"] = $this->Topic_model->listAllTopics();
+            $data["title"] = "Blog" ;
+            for($i = 0; $i < count($data["post"]); $i++){    
+                $data["user"][$i] = $this->User_model->getUser($data["post"][$i]["fk_idUser"]);
+                if($data["post"][$i]["lastComent"] != null){
+                    $data["lastComentUser"][$i] = $this->User_model->getUserByComent($data["post"][$i]["lastComent"], $data["post"][$i]["idPost"]);
+                }
+                else{
+                   $data["lastComentUser"][$i] = "No Comments so far."; 
+                }
+            }
+            $this->load->view("header", $data);
+            $this->load->view("adminHome_view", $data); 
+        }
+        else{
+            redirect(base_url() . "home");
+        }
     }
 
     public function listAllPostsByTopic($topicName = null){
@@ -111,7 +129,11 @@ class Post_controller extends CI_Controller {
 
             $result = $this->Post_model->createPost($lastId, $title, $content, $dateTime, $user, $idTopic);
             if($result){
-                redirect(base_url() . "post/$lastId");
+                if($this->session->typeUser === "Admin"){
+                    redirect(base_url() ."/admin/post/" . $lastId);
+                }else{
+                    redirect(base_url() . "post/$lastId");
+                }
             }
             else{
                 $this->load->view('header', $data);
@@ -150,7 +172,11 @@ public function editPost($idPost = null){
 
                 $result = $this->Post_model->editPost($idPost, $content, $idTopic);
                 if($result){
-                    redirect(base_url() . "post/$idPost");
+                    if($this->session->typeUser === "Admin"){
+                        redirect(base_url() ."admin/post/" . $lastId);
+                    }else{
+                        redirect(base_url() . "post/$idPost");
+                    }
                 }
                 else{
                     $this->load->view('header', $data);
@@ -173,8 +199,11 @@ public function editPost($idPost = null){
             $topicName = strtolower($topicName);
             $result = $this->Post_model->deletePost($idPost);
             if($result){
-                
-                redirect(base_url("home"));
+                if($this->session->typeUser === "Admin"){
+                    redirect(base_url() . "admin");
+                }else{
+                    redirect(base_url("home"));
+                }
             }
             else{
                ///show message error. 
@@ -194,8 +223,12 @@ public function editPost($idPost = null){
             $topicId = $data['idTopic'];
             $topicName = strtolower($topicName);
             $result = $this->Post_model->banPost($idPost, $banned);
-            if($result){            
-                redirect(base_url("post/$idPost"));
+            if($result){          
+                if($this->session->typeUser === "Admin"){
+                    redirect(base_url() . "admin");
+                }else{  
+                    redirect(base_url("post/$idPost"));
+                }
             }
             else{
                ///show message error. 
