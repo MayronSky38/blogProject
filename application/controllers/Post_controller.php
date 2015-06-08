@@ -11,10 +11,8 @@ class Post_controller extends CI_Controller {
             $this->load->model("Coment_model");
             $this->load->helper(array('form', 'url'));
             $this->load->library('pagination');
-            $this->load->library('session'); 
-
-            // Include the autoloader - edit this path!
-            require_once ("assets/WurlfCloudClient/src/autoload.php");                
+            $this->load->library('session');
+            $this->load->library('wurlf');                
     }
 
    public function listAllPosts(){
@@ -50,21 +48,8 @@ class Post_controller extends CI_Controller {
         $links = $this->pagination->create_links();
         $data["links"] = explode('&nbsp;',$links );
 
-        // Create a configuration object 
-        $config = new ScientiaMobile\WurflCloud\Config();
-        
-        // Set your WURFL Cloud API Key 
-        $config->api_key = '227093:sGFS27UhTvDzAZIr6KQlBkJoWgpy91nd'; 
-
-        // Create the WURFL Cloud Client 
-        $client = new ScientiaMobile\WurflCloud\Client($config); 
-
-        // Detect your device 
-        $client->detectDevice();
-
-        // Use the capabilities 
-        $brandName = $client->getDeviceCapability('brand_name');
-        $modelName = $client->getDeviceCapability('model_name');
+        $brandName = $this->wurlf->getBrandName();
+        $modelName = $this->wurlf->getModelName();
 
         if($brandName === "Nokia" && $modelName === "C3-00"){
             $this->load->view("nokia_views/header", $data);
@@ -111,21 +96,8 @@ class Post_controller extends CI_Controller {
         $data['title'] = "Blog";
         $data['topic'] = $this->Topic_model->listAllTopics();
 
-        // Create a configuration object 
-        $config = new ScientiaMobile\WurflCloud\Config();
-        
-        // Set your WURFL Cloud API Key 
-        $config->api_key = '227093:sGFS27UhTvDzAZIr6KQlBkJoWgpy91nd'; 
-
-        // Create the WURFL Cloud Client 
-        $client = new ScientiaMobile\WurflCloud\Client($config); 
-
-        // Detect your device 
-        $client->detectDevice();
-
-        // Use the capabilities 
-        $brandName = $client->getDeviceCapability('brand_name');
-        $modelName = $client->getDeviceCapability('model_name');
+        $brandName = $this->wurlf->getBrandName();
+        $modelName = $this->wurlf->getModelName();
 
         if ($this->form_validation->run() == false)
         {
@@ -191,7 +163,7 @@ public function editPost($idPost = null){
                 $topicId = $this->Topic_model->getIdTopic($topicName);
                 $idTopic = $topicId["idTopic"];
 
-                $result = $this->Post_model->editPost($idPost, $content, $idTopic);
+                $result = $this->Post_model->editPost($idPost, $title, $content, $idTopic);
                 if($result){
                     if($this->session->typeUser === "Admin"){
                         redirect(base_url() ."admin/post/" . $lastId);

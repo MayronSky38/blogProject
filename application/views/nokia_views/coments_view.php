@@ -52,9 +52,9 @@
 	</div>
 
 	<div class="links">
-		<a href="<?php echo base_url() . "/home"?>"> Go back </a>
+		<a href="<?php echo base_url() . "home"?>"> Go back </a>
 	</div>
-	
+
 </div>
 </body>
 </html>
