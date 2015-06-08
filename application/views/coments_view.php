@@ -56,7 +56,7 @@
 		    
 		    <?php  
 				if ($coments[$i]["banned"] != 0 && $post["banned"] == 0){ ?>
-				 <td> <h4>This coment is banned</h4> </td>
+				 <p>This coment is banned</p>
 			<?php } 
 		    if( ($this->session->nickName != null) ){
 		        if( ( ($coments[$i]["nickName"] === $this->session->nickName) || ($this->session->typeUser === "Admin") ) && ($coments[$i]["banned"] == 0) ){ ?>

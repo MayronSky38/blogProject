@@ -1,5 +1,3 @@
-<body>
-
 <?php echo validation_errors(); ?>
 <div class="container text-align-center" style="margin-top:10%;">	
 	<?php if( isset($error) ){
@@ -30,14 +28,14 @@
 		</div>
 	</form>
 </div>
-<?php if( isset($idPost) ){ ?>
+
 	<div class="footer">
-		<a href="<?php echo base_url() . "post/" . $idPost ?> "> Go back </a>
+		<?php if( isset($idPost) ){ ?>
+			<a href="<?php echo base_url() . "post/" . $idPost ?> "> Go back </a>
+		<?php } else{ ?>
+			<a href="<?php echo base_url() . "home" ?> "> Go back </a>
+		<?php } ?>
 	</div>
-<?php } else{ ?>
-	<div class="footer">
-		<a href="<?php echo base_url() . "home" ?> "> Go back </a>
-	</div>
-<?php } ?>
+
 </body>
 </html>

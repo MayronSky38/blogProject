@@ -11,7 +11,10 @@ class Post_controller extends CI_Controller {
             $this->load->model("Coment_model");
             $this->load->helper(array('form', 'url'));
             $this->load->library('pagination');
-            $this->load->library('session');
+            $this->load->library('session'); 
+
+            // Include the autoloader - edit this path!
+            require_once ("assets/WurlfCloudClient/src/autoload.php");                
     }
 
    public function listAllPosts(){
@@ -32,7 +35,7 @@ class Post_controller extends CI_Controller {
         
         $data["post"] = $this->Post_model->listAllPosts($config["per_page"], $page);
         $data["topic"] = $this->Topic_model->listAllTopics();
-        $data["title"] = "Blog" ;
+        $data["title"] = "Blog";
         for($i = 0; $i < count($data["post"]); $i++){    
             $data["user"][$i] = $this->User_model->getUser($data["post"][$i]["fk_idUser"]);
             if($data["post"][$i]["lastComent"] != null){
@@ -47,9 +50,33 @@ class Post_controller extends CI_Controller {
         $links = $this->pagination->create_links();
         $data["links"] = explode('&nbsp;',$links );
 
-        $this->load->view("header", $data);
-        $this->load->view("posts_view", $data);       
+        // Create a configuration object 
+        $config = new ScientiaMobile\WurflCloud\Config();
+        
+        // Set your WURFL Cloud API Key 
+        $config->api_key = '227093:sGFS27UhTvDzAZIr6KQlBkJoWgpy91nd'; 
+
+        // Create the WURFL Cloud Client 
+        $client = new ScientiaMobile\WurflCloud\Client($config); 
+
+        // Detect your device 
+        $client->detectDevice();
+
+        // Use the capabilities 
+        $brandName = $client->getDeviceCapability('brand_name');
+        $modelName = $client->getDeviceCapability('model_name');
+
+        if($brandName === "Nokia" && $modelName === "C3-00"){
+            $this->load->view("nokia_views/header", $data);
+            $this->load->view("nokia_views/posts_view", $data);
+        }
+        else{
+            $this->load->view("header", $data);
+            $this->load->view("posts_view", $data);
+        }
+               
     }
+
 
     public function listAllPostsAdmin(){
         if($this->session->typeUser === "Admin"){
@@ -73,28 +100,6 @@ class Post_controller extends CI_Controller {
         }
     }
 
-    public function listAllPostsByTopic($topicName = null){
-    	if($topicName === null){
-    		show_404();
-    	}
-    	else{
-    		$data["topic"] = $this->Topic_model->getTopic($topicName);
-    		$data["posts"] = $this->Post_model->getPosts($data["topic"]["idTopic"]);
-            $data["title"] = "Posts for " ;
-    		for($i = 0; $i < count($data["posts"]); $i++){
-    			$data["user"][$i] = $this->User_model->getUser($data["posts"][$i]["fk_idUser"]);
-                if($data["posts"][$i]["lastComent"] != null){
-                   $data["lastComent"][$i] = $this->Coment_model->getComentInfo($data["posts"][$i]["idPost"], $data["posts"][$i]["lastComent"]); 
-                }
-                else{
-                    $data["lastComent"][$i] = array("publicDate" => $data["posts"][$i]["publicDate"], "nickName" => $data["user"][$i]["nickName"]);
-                }             
-    		}
-    		$this->load->view("header");
-    		$this->load->view("posts_view", $data);
-    	}
-    }
-
 
     public function createPost(){
         $this->load->library('form_validation');
@@ -106,10 +111,32 @@ class Post_controller extends CI_Controller {
         $data['title'] = "Blog";
         $data['topic'] = $this->Topic_model->listAllTopics();
 
+        // Create a configuration object 
+        $config = new ScientiaMobile\WurflCloud\Config();
+        
+        // Set your WURFL Cloud API Key 
+        $config->api_key = '227093:sGFS27UhTvDzAZIr6KQlBkJoWgpy91nd'; 
+
+        // Create the WURFL Cloud Client 
+        $client = new ScientiaMobile\WurflCloud\Client($config); 
+
+        // Detect your device 
+        $client->detectDevice();
+
+        // Use the capabilities 
+        $brandName = $client->getDeviceCapability('brand_name');
+        $modelName = $client->getDeviceCapability('model_name');
+
         if ($this->form_validation->run() == false)
         {
-            $this->load->view('header', $data);
-            $this->load->view('postCreation_view', $data);
+            if($brandName === "Nokia" && $modelName === "C3-00"){
+                $this->load->view("nokia_views/header", $data);
+                $this->load->view("nokia_views/postCreation_view", $data);
+            }
+            else{
+                $this->load->view('header', $data);
+                $this->load->view('postCreation_view', $data);
+            }
         }
         else 
         {          
@@ -127,17 +154,11 @@ class Post_controller extends CI_Controller {
             $dateTime = mdate($datestring, $time);  
             $user = $this->session->idUser; 
 
-            $result = $this->Post_model->createPost($lastId, $title, $content, $dateTime, $user, $idTopic);
-            if($result){
-                if($this->session->typeUser === "Admin"){
-                    redirect(base_url() ."/admin/post/" . $lastId);
-                }else{
-                    redirect(base_url() . "post/$lastId");
-                }
-            }
-            else{
-                $this->load->view('header', $data);
-                $this->load->view('postCreation_view', $data);
+            $this->Post_model->createPost($lastId, $title, $content, $dateTime, $user, $idTopic);
+            if($this->session->typeUser === "Admin"){
+                redirect(base_url() ."/admin/post/" . $lastId);
+            }else{
+                redirect(base_url() . "post/$lastId");
             }
         }
     }

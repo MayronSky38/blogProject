@@ -9,7 +9,8 @@ class Coment_controller extends CI_Controller {
             $this->load->model("Post_model");
             $this->load->helper(array('form', 'url'));
             $this->load->library('pagination');
-            $this->load->library('session');    
+            $this->load->library('session');  
+            require_once ("assets/WurlfCloudClient/src/autoload.php"); 
     }
 
     public function listAllComents($idPost = null){
@@ -21,9 +22,30 @@ class Coment_controller extends CI_Controller {
     	    $data["coments"] = $this->Coment_model->getComents($idPost);
    		    $data["post"] = $this->Post_model->getPostInfo($idPost);     
             $data["title"] = "Blog";
-            $this->load->view("header", $data);
-    	    $this->load->view("coments_view", $data);
-    	}
+
+            // Create a configuration object 
+            $config = new ScientiaMobile\WurflCloud\Config();
+            // Set your WURFL Cloud API Key 
+            $config->api_key = '227093:sGFS27UhTvDzAZIr6KQlBkJoWgpy91nd';
+            // Create the WURFL Cloud Client 
+            $client = new ScientiaMobile\WurflCloud\Client($config); 
+             
+            // Detect your device 
+            $client->detectDevice();
+
+            // Use the capabilities 
+            $brandName = $client->getDeviceCapability('brand_name');
+            $modelName = $client->getDeviceCapability('model_name');
+
+            if($brandName === "Nokia" && $modelName === "C3-00"){
+                $this->load->view("nokia_views/header", $data);
+                $this->load->view("nokia_views/coments_view", $data);
+            }
+            else{
+                $this->load->view("header", $data);
+        	    $this->load->view("coments_view", $data);
+            }
+        }
     }
 
     public function listAllComentsAdmin($idPost = null){
@@ -59,11 +81,31 @@ class Coment_controller extends CI_Controller {
             $data["coments"] = $this->Coment_model->getComents($idPost);
             $data["post"] = $this->Post_model->getPostInfo($idPost);
 
+            // Create a configuration object 
+            $config = new ScientiaMobile\WurflCloud\Config();
+            // Set your WURFL Cloud API Key 
+            $config->api_key = '227093:sGFS27UhTvDzAZIr6KQlBkJoWgpy91nd';
+            // Create the WURFL Cloud Client 
+            $client = new ScientiaMobile\WurflCloud\Client($config); 
+             
+            // Detect your device 
+            $client->detectDevice();
+
+            // Use the capabilities 
+            $brandName = $client->getDeviceCapability('brand_name');
+            $modelName = $client->getDeviceCapability('model_name');
+
             if ($this->form_validation->run() == false)
             {
                 $data["title"] = "Blog";
-                $this->load->view("header", $data);
-                $this->load->view('comentCreation_view', $data);
+                if($brandName === "Nokia" && $modelName === "C3-00"){
+                    $this->load->view("nokia_views/header", $data);
+                    $this->load->view("nokia_views/comentCreation_view", $data);
+                }
+                else{
+                    $this->load->view("header", $data);
+                    $this->load->view('comentCreation_view', $data);
+                }
             }
             else 
             {          
@@ -152,11 +194,31 @@ class Coment_controller extends CI_Controller {
             $data["post"] = $this->Post_model->getPostInfo($idPost);
             $data["comentToEdit"] = $this->Coment_model->getComentInfo($idPost, $idComent);
 
+            // Create a configuration object 
+            $config = new ScientiaMobile\WurflCloud\Config();
+            // Set your WURFL Cloud API Key 
+            $config->api_key = '227093:sGFS27UhTvDzAZIr6KQlBkJoWgpy91nd';
+            // Create the WURFL Cloud Client 
+            $client = new ScientiaMobile\WurflCloud\Client($config); 
+             
+            // Detect your device 
+            $client->detectDevice();
+
+            // Use the capabilities 
+            $brandName = $client->getDeviceCapability('brand_name');
+            $modelName = $client->getDeviceCapability('model_name');
+
             if ($this->form_validation->run() == false)
             {
                 $data["title"] = "Blog";
-                $this->load->view("header", $data);
-                $this->load->view('comentCreation_view', $data);
+                if($brandName === "Nokia" && $modelName === "C3-00"){
+                    $this->load->view("nokia_views/header", $data);
+                    $this->load->view("nokia_views/comentCreation_view", $data);
+                }
+                else{
+                    $this->load->view("header", $data);
+                    $this->load->view('comentCreation_view', $data);
+                }
             }
             else 
             {          

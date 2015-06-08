@@ -1,0 +1,41 @@
+.container {    
+    width: 100%;
+    margin-top:1%;
+}
+
+ul, 
+ul li {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+ ul li a, a{
+	display: block;
+	padding: 2px 10px;
+	border-bottom: 1px solid gray;
+}
+
+ul li a, ul li a:visited, ul li a:active, a, a:visited {
+    color: #428BCA;
+    text-decoration: none;
+}
+
+ul li a:hover, a:hover {
+    color: #346e9f;
+    border: 1px solid gray;
+}
+
+.links, .coments, .comentsList{
+	margin-top:1%;
+	margin-bottom:1%;
+	border: 1px solid gray;
+}
+
+input{
+	max-width:100px;
+}
+
+textarea{
+	max-width:200px;
+}

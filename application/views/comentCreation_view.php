@@ -16,7 +16,7 @@
 		<h3 class="col-md-offset-4"> Edit Comment </h3>
 		<form class="form-horizontal" name="contact" method="post" action="<?php echo base_url() . "post/". $post['idPost'] . "/editComent/" . $comentToEdit['idComent'] ?>">
 			<div class="form-group">				
-					<textarea rows="8" cols="160" name="content" value="<?php echo $comentToEdit['content'] ?>"> <?php echo $comentToEdit['content'] ?></textarea>
+					<textarea rows="8" cols="160" name="content" value="<?php echo $comentToEdit['content'] ?>"><?php echo $comentToEdit['content'] ?></textarea>
 				<?php } else{ ?>
 		<h3 class="col-md-offset-4"> New Comment </h3>
 		<form class="form-horizontal" name="contact" method="post" action="<?php echo base_url() . "createComent/". $post['idPost']?>">

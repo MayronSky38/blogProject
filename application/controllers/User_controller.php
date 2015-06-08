@@ -47,6 +47,23 @@ class User_controller extends CI_Controller {
                 $password = sha1($password);
                 $validation = $this->User_model->validateUser($nickName, $password);
                 
+                // Include the autoloader - edit this path!
+                require_once ("assets/WurlfCloudClient/src/autoload.php");
+             
+                // Create a configuration object 
+                $config = new ScientiaMobile\WurflCloud\Config();
+                // Set your WURFL Cloud API Key 
+                $config->api_key = '227093:sGFS27UhTvDzAZIr6KQlBkJoWgpy91nd';
+                // Create the WURFL Cloud Client 
+                $client = new ScientiaMobile\WurflCloud\Client($config); 
+             
+                // Detect your device 
+                $client->detectDevice(); 
+             
+                // Use the capabilities 
+                $brandName = $client->getDeviceCapability('brand_name');
+                $modelName = $client->getDeviceCapability('model_name');
+
                 if ($validation != false)
                 {        $session_data = array(
                                 "nickName" => $nickName,
@@ -81,8 +98,15 @@ class User_controller extends CI_Controller {
                 else{
                         $data["title"] = "Login";
                         $data["idPost"] = $idPost;
-                        $this->load->view('header', $data);
-                        $this->load->view('login_view', $data);     
+
+                        if($brandName === "Nokia" && $modelName === "C3-00"){
+                                $this->load->view("nokia_views/header", $data);
+                                $this->load->view("nokia_views/login_view", $data);
+                        }
+                        else{
+                                $this->load->view('header', $data);
+                                $this->load->view('login_view', $data);    
+                        } 
                 }
                 
         }
